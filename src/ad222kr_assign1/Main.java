@@ -5,7 +5,7 @@ package ad222kr_assign1;
  */
 public class Main {
   public static void main(String[] args) {
-    LargestK largestK = new LargestK();
-    System.out.println(largestK.getLargestK());
+    CountDigits countDigits = new CountDigits();
+    countDigits.run();
   }
 }

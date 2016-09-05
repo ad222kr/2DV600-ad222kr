@@ -5,7 +5,7 @@ package ad222kr_assign1;
  */
 public class Main {
   public static void main(String[] args) {
-    HighLow highLow = new HighLow();
-    highLow.play();
+    Diamond diamond = new Diamond();
+    diamond.draw();
   }
 }

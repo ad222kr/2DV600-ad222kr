@@ -3,7 +3,11 @@ package ad222kr_assign1;
 import java.util.Scanner;
 
 public class LargestK {
-  public int getLargestK() {
+  public static void main(String[] args) {
+    int largestK = getLargestK();
+    System.out.println(largestK);
+  }
+  public static int getLargestK() {
     System.out.print("Enter an integer: ");
     Scanner scanner = new Scanner(System.in);
 

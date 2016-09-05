@@ -2,7 +2,11 @@ package ad222kr_assign1;
 
 import java.util.Scanner;
 public class CountDigits {
-  public void run() {
+
+  public static void main(String[] args) {
+    run();
+  }
+  public static void run() {
     System.out.print("Enter a positive integer: ");
     Scanner scanner = new Scanner(System.in);
     int number = scanner.nextInt();

@@ -4,7 +4,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Diamond {
-  public void draw() {
+
+  public static void main(String[] args) {
+    draw();
+  }
+  public static void draw() {
     int width = getUserInput("Please enter a positive, odd integer");
 
     // Top of diamond, start at 1 and go to middle
@@ -34,7 +38,7 @@ public class Diamond {
 
   }
 
-  private int getUserInput(String prompt) {
+  private static int getUserInput(String prompt) {
     Scanner scanner = new Scanner(System.in);
     while (true) {
       try {

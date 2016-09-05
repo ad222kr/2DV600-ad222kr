@@ -5,7 +5,14 @@ enum Outcome {
   LOW, HIGH, CORRECT, NO_MORE_GUESSES, INDEFINETE
 }
 
-public class HighLow {
+class HighLow {
+  public static void main(String[] args) {
+    SecretNumber secretNumber = new SecretNumber();
+    secretNumber.play();
+  }
+}
+
+class SecretNumber {
   private final int MAX = 100;
   private final int MIN = 1;
   private final int MAX_GUESSES = 10;
@@ -16,7 +23,7 @@ public class HighLow {
   private Outcome _outcome;
 
 
-  public HighLow() {
+  public SecretNumber() {
     _scanner = new Scanner(System.in);
     initiate();
   }

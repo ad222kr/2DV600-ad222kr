@@ -5,7 +5,7 @@ package ad222kr_assign1;
  */
 public class Main {
   public static void main(String[] args) {
-    CountDigits countDigits = new CountDigits();
-    countDigits.run();
+    HighLow highLow = new HighLow();
+    highLow.play();
   }
 }

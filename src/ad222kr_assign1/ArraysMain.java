@@ -38,6 +38,15 @@ public class ArraysMain {
       replaceWith, Arrays.toString(arrayToReplaceValuesIn)
     ));
 
+    // Arrays.sort()
+    int[] unsortedArray = { 1, 8, 9, 3, 5, 0, 4, 10, 7 };
+    int[] sortedArray = Arrays.sort(unsortedArray);
+    System.out.println(String.format(
+      "Unsorted array: %s\n" +
+      "Sorted array  : %s",
+      Arrays.toString(unsortedArray), Arrays.toString(sortedArray)
+    ));
+
 
 
 

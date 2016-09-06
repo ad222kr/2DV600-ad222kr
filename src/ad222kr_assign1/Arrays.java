@@ -54,10 +54,21 @@ public class Arrays {
   }
 
   public static int[] sort(int[] arr) {
-    int n = arr.length;
-    while (n > 0) {
+    // http://www.algorithmist.com/index.php/Insertion_sort
 
+    int[] ret = new int[arr.length];
+    System.arraycopy(arr, 0, ret, 0, arr.length);
+    int n = ret.length;
+    for (int i = 1; i < n; i++) {
+      int value = ret[i];
+      int j = i - 1;
+      while (j >= 0 && ret[j] > value) {
+        ret[j + 1] = ret[j];
+        j -= 1;
+      }
+      ret[j + 1] = value;
     }
+    return ret;
   }
 
   public static boolean hasSubsequence(int[] arr, int[] sub) {

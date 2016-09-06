@@ -1,5 +1,7 @@
 package ad222kr_assign1;
 
+import java.lang.reflect.Array;
+
 /**
  * Created by alex on 2016-09-05.
  */
@@ -47,10 +49,46 @@ public class ArraysMain {
       Arrays.toString(unsortedArray), Arrays.toString(sortedArray)
     ));
 
+    // Array.hasSubsequence();
+    int[] arrayToCheck = { 1, 2, 3, 4, 5, 6 };
+    int[] validSubsequence = { 2, 3, 4 };
+    int[] anotherValidSubsequence = { 4, 5 };
+    int[] invalidSubsequence = { 1, 3, 7 };
+    int[] anotherInvalidSubsequence = { 3, 4, 6 };
+    int[] yetAnotherValidSubsequence = { 3, 4, 5, 6 };
+    int[] yetAnotherInvalidSubsequence = { 1, 2, 3, 4, 7 };
 
+    boolean isFirstValid = Arrays.hasSubsequence(arrayToCheck, validSubsequence);
+    boolean isSecondValid = Arrays.hasSubsequence(arrayToCheck, anotherValidSubsequence);
+    boolean isThirdValid = Arrays.hasSubsequence(arrayToCheck, invalidSubsequence);
+    boolean isFourthValid = Arrays.hasSubsequence(arrayToCheck, anotherInvalidSubsequence);
+    boolean isFifthValid = Arrays.hasSubsequence(arrayToCheck, yetAnotherValidSubsequence);
+    boolean isSixthValid = Arrays.hasSubsequence(arrayToCheck, yetAnotherInvalidSubsequence);
 
+    System.out.println(String.format(
+      "First one returns %s, should return true\n" +
+      "Second one returns %s, should return true\n" +
+      "Third returns %s, should return false\n" +
+      "Fourth returns %s, should return false\n" +
+      "Fifth returns %s, should return true\n" +
+      "Sixth returns %s, should return false",
+      isFirstValid, isSecondValid, isThirdValid, isFourthValid,
+      isFifthValid, isSixthValid
+    ));
 
+    // Arrays.absDif()
+    int[] arr1 = { 1, 3, 8, 3, 5 };
+    int[] arr2 = { 3, 1, 4, 8, 9 };
 
+    int[] result = Arrays.absDif(arr1, arr2);
 
+    System.out.println(String.format(
+      "Array 1: %s\n" +
+      "Array 2: %s\n" +
+      "Abs dif: %s",
+      Arrays.toString(arr1),
+      Arrays.toString(arr2),
+      Arrays.toString(result)
+    ));
   }
 }

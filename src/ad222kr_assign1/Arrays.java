@@ -72,11 +72,37 @@ public class Arrays {
   }
 
   public static boolean hasSubsequence(int[] arr, int[] sub) {
-    throw new NotImplementedException();
+    int cursor = 0;
+    while (cursor < arr.length) {
+      for(int i = 0; i < sub.length; i++) {
+        if (sub[i] != arr[cursor + i]) {
+          break;
+        }
+        if (i == sub.length - 1) {
+          // we are at the last element of the sub array
+          // and we passed the check so the subsequence is found
+          return true;
+        }
+      }
+      cursor++;
+    }
+
+    return false;
+
+
   }
 
   public static int[] absDif(int[] arr1, int[] arr2) {
-    throw new NotImplementedException();
+    if (arr1.length != arr2.length) {
+      throw new IllegalArgumentException("Both arrays needs to be of the same size");
+    }
+    int[] ret = new int[arr1.length];
+
+    for (int i = 0; i < arr1.length; i++) {
+      ret[i] = Math.abs(arr1[i] - arr2[i]);
+    }
+
+    return ret;
   }
 
 

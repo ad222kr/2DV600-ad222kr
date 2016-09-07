@@ -1,4 +1,4 @@
-package ad222kr_assign1;
+package ad222kr_assign1.e_7_to_13;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -104,6 +104,4 @@ public class Arrays {
 
     return ret;
   }
-
-
 }

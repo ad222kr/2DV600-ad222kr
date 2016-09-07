@@ -1,4 +1,4 @@
-package ad222kr_assign1;
+package ad222kr_assign1.e_1_to_6;
 
 import java.util.Scanner;
 public class CountDigits {
@@ -34,5 +34,4 @@ public class CountDigits {
       odd, even, zeros, sum);
     System.out.print(result);
   }
-
 }

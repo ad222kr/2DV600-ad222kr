@@ -1,6 +1,6 @@
-package ad222kr_assign1;
+package ad222kr_assign1.e_7_to_13;
 
-import java.lang.reflect.Array;
+import ad222kr_assign1.e_7_to_13.Arrays;
 
 /**
  * Created by alex on 2016-09-05.

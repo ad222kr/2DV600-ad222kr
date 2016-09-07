@@ -1,7 +1,8 @@
-package ad222kr_assign1;
+package ad222kr_assign1.e_7_to_13;
+
+import ad222kr_assign1.e_7_to_13.Arrays;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,7 +13,6 @@ public class Histogram {
   public static void main(String[] args) throws IOException {
     String fileHandle = args[0];
     int[] integers = getIntArray(fileHandle);
-    System.out.println(Arrays.toString(integers));
     countIntegers(integers);
   }
 
@@ -23,7 +23,6 @@ public class Histogram {
       while (scanner.hasNext()) {
         int x = scanner.nextInt();
         integers.add(x);
-        System.out.println(x);
       }
 
       return integers.stream().mapToInt(i -> i).toArray();
@@ -75,7 +74,25 @@ public class Histogram {
 
     System.out.println(String.format("Integers in the interval [1, 100]: %1d", oneToHundred));
     System.out.println(String.format("Integers in the interval [101, 200]: %1d", hundredoneToTwohundred));
+    System.out.println("Histogram");
+    printHistogramRow("1   - 10 ", oneToTen);
+    printHistogramRow("11  - 20 ", elevenToTwenty);
+    printHistogramRow("21  - 30 ", twentyoneToThirty);
+    printHistogramRow("31  - 40 ", thirtyoneToForty);
+    printHistogramRow("41  - 50 ", fortyoneTofifty);
+    printHistogramRow("51  - 60 ", fiftyoneToSixty);
+    printHistogramRow("61  - 70 ", sixtyoneToSeventy);
+    printHistogramRow("71  - 80 ", seventyoneToEighty);
+    printHistogramRow("81  - 90 ", eightyoneToNinety);
+    printHistogramRow("91  - 100", ninetyoneToHundred);
+    printHistogramRow("101 - 200", hundredoneToTwohundred);
+  }
 
+  private static void printHistogramRow(String text, int count) {
     StringBuilder sb = new StringBuilder();
+    for (int i = 1; i <= count; i++) {
+      sb.append("*");
+    }
+    System.out.println(String.format("\t%s  |  %s", text, sb.toString()));
   }
 }

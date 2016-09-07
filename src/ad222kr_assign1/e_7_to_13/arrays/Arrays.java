@@ -1,4 +1,4 @@
-package ad222kr_assign1.e_7_to_13;
+package ad222kr_assign1.e_7_to_13.arrays;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 

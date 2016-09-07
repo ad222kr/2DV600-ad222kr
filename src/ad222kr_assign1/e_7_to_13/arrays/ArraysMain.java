@@ -1,6 +1,6 @@
-package ad222kr_assign1.e_7_to_13;
+package ad222kr_assign1.e_7_to_13.arrays;
 
-import ad222kr_assign1.e_7_to_13.Arrays;
+import ad222kr_assign1.e_7_to_13.arrays.Arrays;
 
 /**
  * Created by alex on 2016-09-05.

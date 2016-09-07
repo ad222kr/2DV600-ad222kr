@@ -1,6 +1,6 @@
 package ad222kr_assign1.e_7_to_13;
 
-import ad222kr_assign1.e_7_to_13.Arrays;
+import ad222kr_assign1.e_7_to_13.arrays.Arrays;
 
 import java.io.*;
 import java.util.ArrayList;

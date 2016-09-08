@@ -14,7 +14,8 @@ public class Fraction {
   public Fraction(int numerator, int denominator) {
     if (denominator == 0) throw new IllegalArgumentException("The denominator cannot be 0");
     if (denominator < 0) {
-      // Switch numerator to negative, since 1/-4 == -1/4
+      // numerator should always be the negative for presenting and checking negative
+      // value reasons. Also flips a fraction like -2/-4 to 2/4
       numerator *= -1;
       denominator *= - 1;
     }

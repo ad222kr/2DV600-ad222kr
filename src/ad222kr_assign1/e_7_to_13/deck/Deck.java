@@ -10,6 +10,10 @@ public class Deck {
   private ArrayList<Card> _cards;
 
   public Deck () {
+    initiate();
+  }
+
+  public void initiate() {
     _cards = buildDeck();
   }
 

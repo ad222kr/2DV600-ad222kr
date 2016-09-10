@@ -40,8 +40,16 @@ public class Queue implements QueueInterface {
     if (_head == null && _size == 0)
       throw new IndexOutOfBoundsException("The queue is empty");
 
-
-    throw new NotImplementedException();
+    Node ret = _head;
+    _head = _head.next;
+    Node node = _head;
+    for (int i = 1; i <= _size; i++) {
+      if (node != null) {
+        node = node.next;
+      }
+    }
+    _size--;
+    return ret.value;
   }
 
   @Override
@@ -62,6 +70,10 @@ public class Queue implements QueueInterface {
 
   @Override
   public boolean contains(Object o) {
+    Node node = _head;
+    for (int i = 1; i <= _size; i++) {
+      if (node.value == o) return true;
+    }
     return false;
   }
 
@@ -69,8 +81,6 @@ public class Queue implements QueueInterface {
   public Iterator iterator() {
     return new ListIterator();
   }
-
-
 
   private class ListIterator implements Iterator<Object> {
     private Node node = _head;

@@ -55,7 +55,6 @@ public class Play123Main {
       if (losingCardCounter > 2) {
         losingCardCounter = 0;
       }
-
     }
     return true;
   }

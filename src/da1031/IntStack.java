@@ -4,7 +4,7 @@
  * Author: Jonas Lundberg
  */
 
-package ad222kr_assign2.e_1;
+package da1031;
 
 import java.lang.IndexOutOfBoundsException;
 

@@ -1,8 +1,8 @@
 package ad222kr_assign2.e_1;
 
-/**
- * Created by alex on 2016-09-12.
- */
+import da1031.AbstractIntCollection;
+import da1031.IntList;
+
 public class ArrayIntList extends AbstractIntCollection implements IntList {
   @Override
   public void add(int n) {
@@ -14,11 +14,15 @@ public class ArrayIntList extends AbstractIntCollection implements IntList {
 
   @Override
   public void addAt(int n, int index) throws IndexOutOfBoundsException {
-    if (!checkIndex(index, size)) {
+    if (!checkIndex(index, size + 1)) {
       throw new IndexOutOfBoundsException();
     }
     if (size == values.length) {
       resize();
+    }
+
+    for (int i = size; i > index; i--) {
+      values[i] = values[i - 1];
     }
     values[index] = n;
     size++;
@@ -26,24 +30,21 @@ public class ArrayIntList extends AbstractIntCollection implements IntList {
 
   @Override
   public void remove(int index) throws IndexOutOfBoundsException {
-    if (!checkIndex(index, size)) {
+    if (isEmpty() || !checkIndex(index, size)) {
       throw new IndexOutOfBoundsException();
     }
 
-    int[] temp = new int[values.length];
-    // Copy first half, ignore elem at index and copy rest
-    System.arraycopy(values, 0, temp, 0, index);
-    System.arraycopy(values, index + 1, temp, index, values.length - index - 1);
-    values = temp;
+    for (int i = index; i < size; i++) {
+      values[i] = values[i + 1];
+    }
     size--;
   }
 
   @Override
   public int get(int index) throws IndexOutOfBoundsException {
-    if (!checkIndex(index, size)) {
+    if (isEmpty() || !checkIndex(index, size)) {
       throw new IndexOutOfBoundsException();
     }
-
     return values[index];
   }
 
@@ -56,5 +57,4 @@ public class ArrayIntList extends AbstractIntCollection implements IntList {
     }
     return -1;
   }
-
 }

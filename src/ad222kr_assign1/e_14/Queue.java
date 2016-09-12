@@ -7,7 +7,7 @@ import java.util.Iterator;
 /**
  * Created by alex on 2016-09-10.
  */
-public class Queue implements QueueInterface {
+public class Queue implements QueueInterface, Iterable<Integer> {
 
   private int _size = 0;
   private Node _head = null;

@@ -20,19 +20,23 @@ public abstract class Vehicle {
     _vehicleCost = vehicleCost;
     _hasEmbarked = false;
     _maxNumberOfPassengers = maxNumberOfPassengers;
-    _passengers = new ArrayList<Passenger>(_maxNumberOfPassengers);
+    _passengers = new ArrayList<>(_maxNumberOfPassengers);
 
     for (int i = 1; i <= numberOfPassengers;i++) {
       _passengers.add(new Passenger(_passengerCost));
     }
   }
 
+  public int getSpaceRequired() {
+    return _spaceRequired;
+  }
+
   public int getPassengerCount() {
     return _passengers.size();
   }
 
-  public double getTotalCost() {
-    return _vehicleCost + _passengerCost * _passengers.size();
+  public double getCost() {
+    return _vehicleCost;
   }
 
   public void embark() {
@@ -67,9 +71,6 @@ public abstract class Vehicle {
     _passengers.remove(index);
   }
 
-
-
-
   private boolean isFull() {
     return _passengers.size() >= _maxNumberOfPassengers;
   }
@@ -85,7 +86,7 @@ public abstract class Vehicle {
         "\tNo of passengers: %d.\n" +
         "\tMax number of passengers: %d\n" +
         "\tTotal cost: %.2f kr\n",
-      getClass().getSimpleName(), getPassengerCount(), _maxNumberOfPassengers, getTotalCost()
+      getClass().getSimpleName(), getPassengerCount(), _maxNumberOfPassengers, getCost()
     );
   }
 

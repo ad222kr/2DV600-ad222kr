@@ -53,6 +53,7 @@ class SecretNumber {
         }
       } catch (Exception e) {
         System.out.println("Wrong input, try again");
+        break;
       }
 
     }

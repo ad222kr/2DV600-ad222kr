@@ -110,6 +110,10 @@ public class FractionMain {
     boolean isEqual2 = f1.isEqualTo(f5);
     boolean isEqual3 = f4.isEqualTo(f2);
 
+    Fraction a = new Fraction(1, 2);
+    Fraction b = new Fraction(2, 4);
+    System.out.println("Equals: " + a.equals(b));
+
     System.out.println(String.format(
       "%s == %s returns %s",
       f1.toString(), f3.toString(), isEqual1

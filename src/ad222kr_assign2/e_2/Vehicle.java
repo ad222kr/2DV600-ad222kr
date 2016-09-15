@@ -7,14 +7,18 @@ import java.util.List;
 
 public abstract class Vehicle {
   protected int _spaceRequired;
-  protected double _passengerCost;
-  protected double _vehicleCost;
+  protected int _passengerCost;
+  protected int _vehicleCost;
   protected ArrayList<Passenger> _passengers;
   protected boolean _hasEmbarked;
   protected int _maxNumberOfPassengers;
 
-  protected Vehicle(int spaceRequired, double passengerCost, double vehicleCost,
+  protected Vehicle(int spaceRequired, int passengerCost, int vehicleCost,
                     int maxNumberOfPassengers, int numberOfPassengers) {
+
+    if (numberOfPassengers > maxNumberOfPassengers) {
+      throw new IllegalArgumentException("The amount of passengers is to large for the vehicle");
+    }
     _spaceRequired = spaceRequired;
     _passengerCost = passengerCost;
     _vehicleCost = vehicleCost;
@@ -35,7 +39,7 @@ public abstract class Vehicle {
     return _passengers.size();
   }
 
-  public double getCost() {
+  public int getCost() {
     return _vehicleCost;
   }
 
@@ -60,7 +64,7 @@ public abstract class Vehicle {
   }
 
   public void removePassenger(int index) {
-    if (!isCorrectindex(index)) {
+    if (!isValidIndex(index)) {
       throw new IndexOutOfBoundsException(
         String.format(
           "Index out of bounds. Upper: %d, Attempted: %d",
@@ -75,21 +79,28 @@ public abstract class Vehicle {
     return _passengers.size() >= _maxNumberOfPassengers;
   }
 
-  private boolean isCorrectindex(int index) {
+  private boolean isValidIndex(int index) {
     return index >= 0 && index < getPassengerCount();
   }
 
   @Override
   public String toString() {
-    return String.format(
-      "Vehicle type: %s. \n" +
-        "\tNo of passengers: %d.\n" +
-        "\tMax number of passengers: %d\n" +
-        "\tTotal cost: %.2f kr\n",
-      getClass().getSimpleName(), getPassengerCount(), _maxNumberOfPassengers, getCost()
-    );
+    StringBuilder sb = new StringBuilder();
+
+    int passengerCost = 0;
+    for (Passenger p : _passengers) {
+      passengerCost += p.getPrice();
+    }
+
+    sb.append(String.format("Vehicle type:                   %s\n", this.getClass().getSimpleName()));
+    sb.append(String.format("Max no of passengers:           %d\n", _maxNumberOfPassengers));
+    sb.append(String.format("Current no of passengers:       %d\n", getPassengerCount()));
+    sb.append(String.format("Vehicle cost:                   %d\n", getCost()));
+    sb.append(String.format("Passenger cost(per passenger):  %d\n", _passengerCost));
+    sb.append(String.format("Total cost:                     %d\n", getCost() + passengerCost));
+
+
+    return sb.toString();
+
   }
-
-
-
 }

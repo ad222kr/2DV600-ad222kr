@@ -8,18 +8,15 @@ import java.util.stream.Stream;
  */
 public class Ferry implements IFerry {
   private static final int MAX_NUMBER_OF_PASSENGERS = 200;
+  private static final int MAX_NUMBER_OF_VEHICLE_SPACE = 200;
   private ArrayList<Vehicle> _vehicles;
   private ArrayList<Passenger> _passengers;
-  private int _spaceLeft = 200; // In terms of bikes. 40 cars. 1 car = 5 bikes
+  private int _vehicleSpaceTaken;
   private int _moneyEarned;
 
   public Ferry() {
-    _vehicles = new ArrayList<>(_spaceLeft);
+    _vehicles = new ArrayList<>(MAX_NUMBER_OF_VEHICLE_SPACE); // Assume 200 bikes
     _passengers = new ArrayList<>(MAX_NUMBER_OF_PASSENGERS);
-  }
-
-  public double getMoneyEarned() {
-    return _moneyEarned;
   }
 
   @Override
@@ -38,11 +35,11 @@ public class Ferry implements IFerry {
 
   @Override
   public int countMoney() {
-    // This method counts the money for the vehicles currently on the ferry
-    // This is how i interpreted the assignment, since the money should not
-    // be cleared on disembarking, it has to be held in a field and added each
-    // time a vehicle/passenger is embarked.
-
+    // Would be better to name this method getEarnedMoney
+    // The money is added when a vehicle and/or a passenger is embarked
+    // else the money would be added again each time it is counted, and since
+    // the requirements state that the money should not be reset when the ferry
+    // disembarks, it is stored in a field.
     return _moneyEarned;
   }
 
@@ -54,13 +51,14 @@ public class Ferry implements IFerry {
     if (_vehicles.contains(v)) {
       throw new IllegalArgumentException("The car is already on the ferry");
     }
-    if (!hasSpaceFor(v)) {
+    if (!hasSpaceFor(v) || _passengers.size() + v.getPassengerCount() > MAX_NUMBER_OF_PASSENGERS) {
       // idk if the right exception
-      throw new IllegalStateException("There is no more room for a vehicle on the ferry");
+      throw new IndexOutOfBoundsException("There is no more room for a vehicle on the ferry");
     }
     _vehicles.add(v);
     _moneyEarned += v.getCost();
     v.embark();
+    _vehicleSpaceTaken += v.getSpaceRequired();
     v.getPassengers().forEach(this::embark);
 
   }
@@ -72,7 +70,7 @@ public class Ferry implements IFerry {
     }
     if (!hasRoomFor(p)) {
       // idk if the right exception
-      throw new IllegalStateException("There is no more room for a person on the ferry");
+      throw new IndexOutOfBoundsException("There is no more room for a person on the ferry");
     }
     _passengers.add(p);
     _moneyEarned += p.getPrice();
@@ -82,11 +80,12 @@ public class Ferry implements IFerry {
   public void disembark() {
     _passengers.clear();
     _vehicles.clear();
+    _vehicleSpaceTaken = 0;
   }
 
   @Override
   public boolean hasSpaceFor(Vehicle v) {
-    return _spaceLeft - v.getSpaceRequired() >= 0;
+    return _vehicleSpaceTaken + v.getSpaceRequired() <= MAX_NUMBER_OF_VEHICLE_SPACE;
   }
 
   @Override
@@ -94,6 +93,27 @@ public class Ferry implements IFerry {
     return _passengers.size() < MAX_NUMBER_OF_PASSENGERS;
   }
 
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Ze ferry!\n");
+    sb.append(String.format("Number of passengers: %d\n", countPassengers()));
+    sb.append(String.format("Number of vehicles:   %d\n", _vehicles.size()));
+    sb.append(String.format("Money earned:         %d\n", countMoney()));
+
+    // Generates a lot of output on a full ferry. Uncomment to see it all
+//    sb.append("Vehicles on the ferry:\n");
+//    for (Vehicle v : this) {
+//      sb.append(String.format(
+//        "%s\n" +
+//        "\tUnits of space taken: %d\n" +
+//        "\tNumber of passengers: %d\n",
+//        v.getClass().getSimpleName(), v.getSpaceRequired(), v.getPassengerCount()
+//      ));
+//    }
+//    sb.append("\n");
+    return sb.toString();
+  }
   @Override
   public Iterator<Vehicle> iterator() {
     return new Iterator<Vehicle>() {

@@ -40,4 +40,6 @@
   Exceptions are handled with the try/catch statement. One should hide the stack trace in production and present a user-friendly message that something went wrong.
 12. **Why is it important to test your code/application/product, before you deliver it to your customer/boss/teacher?**  
   This is important to avoid bugs sneaking into production code.
-13. **What is JavaDoc? How do you write documentation with it?**  
+13. **What is JavaDoc? How do you write documentation with it?**
+  JavaDock is a tool to generate API documentation for your code in HTML. You document your classes and methods with
+  special "doc comments", which are de facto standard for documenting Java code.

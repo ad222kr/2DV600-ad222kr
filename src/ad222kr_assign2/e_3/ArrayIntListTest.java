@@ -22,17 +22,16 @@ public class ArrayIntListTest {
 
   @Before
   public void setUp(){
-    list = new ArrayIntList();
-    for (int i = 1; i <= initialListLength; i++) {
-      list.add(i);
-    }
-    System.out.println();
+    list = buildList(initialListLength);
   }
 
   @Test
   public void add_twentyElements() {
-    int expected = initialListLength;
+    int expected = initialListLength + 20;
 
+    for (int i = 1; i <= initialListLength; i++) {
+      list.add(i);
+    }
 
     int actual = list.size();
 
@@ -175,8 +174,8 @@ public class ArrayIntListTest {
   }
 
   @Test
-  public void get_validIndex() {
-    int index = new Random().nextInt(initialListLength);
+  public void get_validIndex5() {
+    int index = 5;
     int expected = 42;
     list.addAt(expected, index);
 
@@ -187,17 +186,38 @@ public class ArrayIntListTest {
   }
 
   @Test
-  public void get_invalidIndex() {
+  public void get_validIndex12() {
+    int index = 12;
+    int expected = 42;
+    list.addAt(expected, index);
+
+    int actual = list.get(index);
+
+    assertEquals(String.format("The element at index %d should match %d", index, expected),
+      expected, actual);
+  }
+
+  @Test
+  public void get_invalidIndex42() {
     exception.expect(IndexOutOfBoundsException.class);
 
-    int index = initialListLength + new Random().nextInt(initialListLength) + 1;
+    int index = 42;
 
     list.get(index);
   }
 
   @Test
-  public void indexOf_existingElement() {
-    int expected = new Random().nextInt(initialListLength);
+  public void get_invalidIndex1337() {
+    exception.expect(IndexOutOfBoundsException.class);
+
+    int index = 1337;
+
+    list.get(index);
+  }
+
+  @Test
+  public void indexOf_existingElement12() {
+    int expected = 12;
     int element = list.get(expected);
 
 
@@ -209,14 +229,47 @@ public class ArrayIntListTest {
   }
 
   @Test
-  public void indexOf_nonexistingElement() {
+  public void indexOf_existingElement19() {
+    int expected = 19;
+    int element = list.get(expected);
+
+
+
+    int actual = list.indexOf(element);
+
+    assertEquals("The index of %d should match the index of the indexOf(%d) method",
+      expected, actual);
+  }
+
+  @Test
+  public void indexOf_nonexistingElement42() {
     int expected = -1;
-    int nonExistingElement = initialListLength + 42;
+    int nonExistingElement = 42;
 
     int actual = list.indexOf(nonExistingElement);
 
     assertEquals("The index returned should be -1 for a nonexisting element",
       actual, expected);
+  }
+
+  @Test
+  public void indexOf_nonexistingElement78() {
+    int expected = -1;
+    int nonExistingElement = 78;
+
+    int actual = list.indexOf(nonExistingElement);
+
+    assertEquals("The index returned should be -1 for a nonexisting element",
+      actual, expected);
+  }
+
+  // Helpers
+  public ArrayIntList buildList(int numberOfElements) {
+    ArrayIntList list = new ArrayIntList();
+    for (int i = 1; i <= numberOfElements; i++) {
+      list.add(i);
+    }
+    return list;
   }
 
 }

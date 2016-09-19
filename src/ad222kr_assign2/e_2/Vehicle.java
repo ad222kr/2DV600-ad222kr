@@ -27,7 +27,7 @@ public abstract class Vehicle {
     _passengers = new ArrayList<>(_maxNumberOfPassengers);
 
     for (int i = 1; i <= numberOfPassengers;i++) {
-      _passengers.add(new Passenger(_passengerCost));
+      addPassenger(new Passenger(_passengerCost));
     }
   }
 

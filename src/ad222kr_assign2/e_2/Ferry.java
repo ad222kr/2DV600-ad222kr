@@ -48,9 +48,10 @@ public class Ferry implements IFerry {
     if (v.hasEmbarked()) {
       throw new IllegalStateException("The vehicle has already embarked and cannot embark again");
     }
-    if (_vehicles.contains(v)) {
-      throw new IllegalArgumentException("The car is already on the ferry");
-    }
+    // hasEmbarked() takes care of this check
+//    if (_vehicles.contains(v)) {
+//      throw new IllegalArgumentException("The car is already on the ferry");
+//    }
     if (!hasSpaceFor(v) || _passengers.size() + v.getPassengerCount() > MAX_NUMBER_OF_PASSENGERS) {
       // idk if the right exception
       throw new IndexOutOfBoundsException("There is no more room for a vehicle on the ferry");
@@ -78,6 +79,9 @@ public class Ferry implements IFerry {
 
   @Override
   public void disembark() {
+    for (int i = 0; i < _vehicles.size(); i++) {
+      _vehicles.get(i).disembark();
+    }
     _passengers.clear();
     _vehicles.clear();
     _vehicleSpaceTaken = 0;

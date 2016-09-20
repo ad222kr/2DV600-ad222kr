@@ -71,8 +71,8 @@ public class GenericQueue<E> implements Queue<E> {
   }
 
   @Override
-  public Iterator iterator() {
-    return new Iterator() {
+  public Iterator<E> iterator() {
+    return new Iterator<E>() {
       private Node node = head;
       @Override
       public boolean hasNext() {

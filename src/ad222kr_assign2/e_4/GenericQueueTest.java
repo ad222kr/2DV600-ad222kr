@@ -4,6 +4,9 @@ import org.junit.Test;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import java.util.Iterator;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class GenericQueueTest {
@@ -195,6 +198,53 @@ public class GenericQueueTest {
     Queue<Integer> queue = buildIntQueue(0);
 
     queue.last();
+  }
+
+  @Test
+  public void iterator_testReturnValue() {
+    Queue<Integer> queue = buildIntQueue(10);
+
+    boolean isIterator = queue.iterator() instanceof Iterator;
+    assertTrue("iterator() must return an Iterator", isIterator);
+  }
+
+  @Test
+  public void iterator_hasNextWithNextValue() {
+    Queue<Integer> queue = buildIntQueue(20);
+    Iterator it = queue.iterator();
+
+    assertTrue("The iterator.hasNext has to return true when the next element is present",
+      it.hasNext());
+  }
+
+  @Test
+  public void iterator_hasNextWithNoNextValue() {
+    Queue<Integer> queue = buildIntQueue(0);
+    Iterator<Integer> it = queue.iterator();
+
+    assertFalse("iterator.hasNext() must return false when no more elements exist",
+      it.hasNext());
+  }
+
+  @Test
+  public void iterator_nextWithNextExisting() {
+    Queue<Integer> queue = buildIntQueue(20);
+    Iterator<Integer> it = queue.iterator();
+    int expected = queue.first();
+    int actual = it.next();
+
+    assertEquals("The first element in the queue should match the first call to iteratior().next()",
+      expected, actual);
+  }
+
+  @Test
+  public void iterator_nextWithNoNextElement() {
+    exception.expect(IndexOutOfBoundsException.class);
+    Queue<Integer> queue = buildIntQueue(0);
+    Iterator<Integer> it = queue.iterator();
+
+    it.next();
+
   }
 
   private Queue<Integer> buildIntQueue(int numberOfElements) {

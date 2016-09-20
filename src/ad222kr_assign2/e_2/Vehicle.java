@@ -43,6 +43,10 @@ public abstract class Vehicle {
     return _vehicleCost;
   }
 
+  public void disembark() {
+    _hasEmbarked = false;
+  }
+
   public void embark() {
     _hasEmbarked = true;
   }
@@ -103,4 +107,6 @@ public abstract class Vehicle {
     return sb.toString();
 
   }
+
+
 }

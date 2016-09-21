@@ -21,16 +21,16 @@ public class WordCount1Main {
       Files.lines(Paths.get(filePath))
         .map(line -> line.split("\\s+"))
         .flatMap(Arrays::stream)
-        .forEach(word -> processWord(word));
+        .forEach(WordCount1Main::processWord);
 
-      System.out.println(hashWords.size());
-      System.out.println(treeWords.size());
+      for (Word word : treeWords) {
+        System.out.println(word.toString());
+      }
 
-      Word w = new Word("binary");
-      System.out.println(w.hashCode());
-      System.out.println(hashWords.contains(w));
-      hashWords.remove(w);
-      System.out.println(hashWords.contains(w));
+      System.out.println(String.format(
+        "\nSize of the HashSet: %d",
+        hashWords.size()));
+      System.out.println(String.format("Size of the TreeSet: %d", treeWords.size()));
 
     } catch (IOException e) {
       System.out.println("Something went wrong when reading the file...");

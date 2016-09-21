@@ -36,7 +36,7 @@ public class BinaryWordSet implements WordSet {
     }
 
     public void add(int n) {
-      
+
     }
 
   }

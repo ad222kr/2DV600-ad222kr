@@ -15,7 +15,8 @@ public class WordCount1Main {
   static HashSet<Word> hashWords = new HashSet<>();
   static TreeSet<Word> treeWords = new TreeSet<>();
   public static void main(String[] args) {
-    String filePath = "/home/alex/Code/Java/2DV600/src/ad222kr_assign2/e_5/HistoryOfProgramming.txt";
+    //String filePath = "/home/alex/Code/Java/2DV600/src/ad222kr_assign2/e_5/HistoryOfProgramming.txt";
+    String filePath = args[0];
     try {
       Files.lines(Paths.get(filePath))
         .map(line -> line.split("\\s+"))
@@ -25,9 +26,9 @@ public class WordCount1Main {
       System.out.println(hashWords.size());
       System.out.println(treeWords.size());
 
-      for (Word word : treeWords) {
-        System.out.println(word.toString());
-      }
+//      for (Word word : treeWords) {
+//        System.out.println(word.toString());
+//      }
     } catch (IOException e) {
       System.out.println("Something went wrong when reading the file...");
       System.out.println("Message: " + e.getMessage());

@@ -25,12 +25,16 @@ public class Word implements Comparable<Word> {
 //    }
 //    return result;
 
-    return word.hashCode();
+    return word.toLowerCase().hashCode();
   }
 
   @Override
   public boolean equals(Object other) {
-    return this.word.toLowerCase().equals(other.toString().toLowerCase());
+    if (other instanceof Word) {
+      Word otherWord = (Word) other;
+      return word.toLowerCase().equals(otherWord.toString().toLowerCase());
+    }
+    return false;
   }
 
   @Override

@@ -18,7 +18,7 @@ public class IdentifyWordsMain {
       String filePath = args[0];
       int indexOfLastSlash = filePath.lastIndexOf("/");
       String folderPath = filePath.substring(0, indexOfLastSlash + 1);
-      
+
       ArrayList<String> words = Files.lines(Paths.get(filePath))
                                   .map(line -> line.split("\\s+"))
                                   .flatMap(Arrays::stream)

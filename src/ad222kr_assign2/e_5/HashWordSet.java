@@ -12,7 +12,9 @@ public class HashWordSet implements WordSet {
   @Override
   public void add(Word word) {
     if (contains(word)) {
+      // should return false...
       return;
+
     }
 
     int bucketIndex = getBucketIndex(word);
@@ -23,6 +25,64 @@ public class HashWordSet implements WordSet {
     if (size == buckets.length) {
       rehash();
     }
+
+    // return true; // should be this tbh
+  }
+
+  public boolean remove(Word word) {
+    if (!contains(word)) {
+      return false;
+    }
+
+    int bucketIndex = getBucketIndex(word);
+    Node node = buckets[bucketIndex];
+
+    if (node.value.equals(word)) {
+      buckets[bucketIndex] = node.next;
+      size--;
+      return true;
+    }
+
+    while (node.next != null) {
+      if (node.next.value.equals(word)) {
+        node.next = node.next.next;
+        size--;
+        return true;
+      } else {
+        node = node.next;
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public boolean contains(Word word) {
+    int bucketIndex = getBucketIndex(word);
+    Node node = buckets[bucketIndex];
+    while (node != null) {
+      if (node.value.equals(word)) {
+        return true;
+      } else {
+        node = node.next;
+      }
+    }
+    return false;
+  }
+
+  public boolean isEmpty() {
+    return size == 0;
+  }
+
+  @Override
+  public int size() {
+    return size;
+  }
+
+  private int getBucketIndex(Word word) {
+    int hashCode = word.hashCode();
+
+    if (hashCode < 0) hashCode *= -1;
+    return hashCode % buckets.length;
   }
 
   private void rehash() {
@@ -42,45 +102,50 @@ public class HashWordSet implements WordSet {
   }
 
   @Override
-  public boolean contains(Word word) {
-    int bucketIndex = getBucketIndex(word);
-    Node node = buckets[bucketIndex];
-    while (node != null) {
-      if (node.value.equals(word)) {
-        return true;
-      } else {
-        node = node.next;
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("The HashWordSet\n");
+    sb.append("===============\n");
+
+    for (Word word : this) {
+      sb.append(word.toString() + "\n");
+    }
+    sb.append("End of HashWordSet\n");
+
+    return sb.toString();
+  }
+
+  @Override
+  public Iterator iterator() {
+    return new WordIterator();
+  }
+
+  private class WordIterator implements Iterator<Word> {
+    int pos = 0;
+    Word[] words;
+
+    public WordIterator() {
+      System.out.println(size);
+      words = new Word[size];
+      for (int i = 0, n = 0; i < buckets.length; i++) {
+        Node node = buckets[i];
+
+        while (node != null) {
+          words[n++] = node.value;
+          node = node.next;
+        }
       }
     }
-    return false;
-  }
 
-  @Override
-  public int size() {
-    return size;
-  }
+    @Override
+    public boolean hasNext() {
+      return pos < words.length;
+    }
 
-  private int getBucketIndex(Word word) {
-    int hashCode = word.hashCode();
-
-    if (hashCode < 0) hashCode *= -1;
-    return hashCode % buckets.length;
-  }
-
-
-  @Override
-  public Iterator<Word> iterator() {
-    return new Iterator<Word>() {
-      @Override
-      public boolean hasNext() {
-        return false;
-      }
-
-      @Override
-      public Word next() {
-        return null;
-      }
-    };
+    @Override
+    public Word next() {
+      return words[pos++];
+    }
   }
   private class Node {
     Word value;

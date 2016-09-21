@@ -26,9 +26,12 @@ public class WordCount1Main {
       System.out.println(hashWords.size());
       System.out.println(treeWords.size());
 
-//      for (Word word : treeWords) {
-//        System.out.println(word.toString());
-//      }
+      Word w = new Word("binary");
+      System.out.println(w.hashCode());
+      System.out.println(hashWords.contains(w));
+      hashWords.remove(w);
+      System.out.println(hashWords.contains(w));
+
     } catch (IOException e) {
       System.out.println("Something went wrong when reading the file...");
       System.out.println("Message: " + e.getMessage());

@@ -17,15 +17,18 @@ public class Word implements Comparable<Word> {
     return word;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public int hashCode() {
-//    int result = 17;
-//    for (int i = 0; i <= word.length(); i++) {
-//      result = 31 * result + word.charAt(i);
-//    }
-//    return result;
+
+    //    int result = 17;
+    //    for (int i = 0; i <= word.length(); i++) {
+    //      result = 31 * result + word.charAt(i);
+    //    }
+    //    return result;
 
     return word.toLowerCase().hashCode();
+
   }
 
   @Override

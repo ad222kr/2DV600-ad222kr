@@ -1,4 +1,4 @@
-package ad222kr_assign2.e_5;
+package ad222kr_assign2.e_5.models;
 
 import java.util.Iterator;
 

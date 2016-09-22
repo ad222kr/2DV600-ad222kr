@@ -1,5 +1,6 @@
-package ad222kr_assign2.e_5;
+package ad222kr_assign2.e_5.test;
 
+import ad222kr_assign2.e_5.models.Word;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,6 +1,4 @@
-package ad222kr_assign2.e_5;
-
-import java.util.Comparator;
+package ad222kr_assign2.e_5.models;
 
 /**
  * Created by alex on 20.9.16.

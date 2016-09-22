@@ -1,4 +1,4 @@
-package ad222kr_assign2.e_5;
+package ad222kr_assign2.e_5.models;
 
 public interface WordSet extends Iterable<Word> {
   void add(Word word); // Add word if not already added

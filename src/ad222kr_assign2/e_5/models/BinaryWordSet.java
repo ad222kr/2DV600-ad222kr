@@ -1,5 +1,8 @@
 package ad222kr_assign2.e_5.models;
 
+import ad222kr_assign2.e_4.GenericQueue;
+import ad222kr_assign2.e_4.Queue;
+
 import java.util.Iterator;
 
 /**
@@ -11,18 +14,17 @@ public class BinaryWordSet implements WordSet {
 
   @Override
   public void add(Word word) {
-    // TODO: check if the word exists
     if (root == null) {
       root = new BSTNode(word);
-    } else {
-      root.add(word);
+      size++;
+    } else if (root.add(word)) {
+      size++;
     }
-    size++;
   }
 
   @Override
   public boolean contains(Word word) {
-    return false;
+    return root.contains(word);
   }
 
   @Override
@@ -32,7 +34,35 @@ public class BinaryWordSet implements WordSet {
 
   @Override
   public Iterator<Word> iterator() {
-    return null;
+    return new TreeSetIterotor();
+  }
+
+  private class TreeSetIterotor implements Iterator<Word> {
+    Queue<BSTNode> queue;
+    public TreeSetIterotor() {
+      queue = new GenericQueue<>();
+      visit(root);
+    }
+
+    private void visit(BSTNode node) {
+      if (node.left != null) {
+        visit(node.left);
+      }
+      queue.enqueue(node);
+      if (node.right != null) {
+        visit(node.right);
+      }
+
+    }
+    @Override
+    public boolean hasNext() {
+      return !queue.isEmpty();
+    }
+
+    @Override
+    public Word next() {
+      return queue.dequeue().value;
+    }
   }
 
   private class BSTNode {
@@ -44,19 +74,52 @@ public class BinaryWordSet implements WordSet {
       this.value = value;
     }
 
-    public void add(Word word) {
+    public boolean add(Word word) {
       if (value.compareTo(word) > 0) {
         if (left == null) {
           left = new BSTNode(word);
+          return true;
         } else {
-          left.add(word);
+          return left.add(word);
         }
       } else if (value.compareTo(word) < 0) {
         if (right == null) {
           right = new BSTNode(word);
+          return true;
         } else {
-          right.add(word);
+          return right.add(word);
         }
+      }
+      return false;
+    }
+
+    public boolean contains(Word word) {
+      if (value.compareTo(word) == 0) {
+        return true;
+      }
+      else if (value.compareTo(word) > 0) {
+        if (left == null) {
+          return false;
+        } else {
+          return left.contains(word);
+        }
+      } else if (value.compareTo(word) < 0) {
+        if (right == null) {
+          return false;
+        } else {
+          return right.contains(word);
+        }
+      }
+      return false;
+    }
+
+    public void print() {
+      if (left != null) {
+        left.print();
+      }
+      System.out.print(" " + value);
+      if (right != null) {
+        right.print();
       }
     }
 

@@ -107,7 +107,7 @@ public class HashWordSet implements WordSet {
     sb.append("The HashWordSet\n");
     sb.append("===============\n");
 
-    for (Word word : this) {
+    for (Object word : this) {
       sb.append(word.toString() + "\n");
     }
     sb.append("End of HashWordSet\n");

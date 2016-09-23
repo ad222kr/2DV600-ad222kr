@@ -49,6 +49,9 @@ public class GenericQueue<E> implements Queue<E> {
       }
     }
     size--;
+    if (size == 0) {
+      tail = null;
+    }
     return value;
   }
 

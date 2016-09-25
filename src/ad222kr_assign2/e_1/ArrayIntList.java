@@ -55,6 +55,6 @@ public class ArrayIntList extends AbstractIntCollection implements IntList {
         return i;
       }
     }
-    return -1;
+    return -1; // if we did not find the element, this seems to be the standard way to go
   }
 }

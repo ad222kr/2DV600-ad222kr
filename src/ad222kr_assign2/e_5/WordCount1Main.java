@@ -13,8 +13,8 @@ import java.util.TreeSet;
  * Created by alex on 20.9.16.
  */
 public class WordCount1Main {
-  static HashSet<Word> hashWords = new HashSet<>();
-  static TreeSet<Word> treeWords = new TreeSet<>();
+  private static HashSet<Word> hashWords = new HashSet<>();
+  private static TreeSet<Word> treeWords = new TreeSet<>();
   public static void main(String[] args) {
     //String filePath = "/home/alex/Code/Java/2DV600/src/ad222kr_assign2/e_5/HistoryOfProgramming.txt";
     String filePath = args[0];

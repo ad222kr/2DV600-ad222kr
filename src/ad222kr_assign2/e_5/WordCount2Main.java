@@ -8,17 +8,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.Iterator;
 
-import static ad222kr_assign2.e_5.WordCount1Main.hashWords;
 
 /**
  * Created by alex on 20.9.16.
  */
 public class WordCount2Main {
-  public static HashWordSet hasWords = new HashWordSet();
-  public static BinaryWordSet treeWords = new BinaryWordSet();
+  private static HashWordSet hashWords = new HashWordSet();
+  private static BinaryWordSet treeWords = new BinaryWordSet();
 
   public static void main(String[] args) {
     //String filePath = "/home/alex/Code/Java/2DV600/src/ad222kr_assign2/e_5/HistoryOfProgramming.txt";
@@ -29,8 +27,18 @@ public class WordCount2Main {
         .flatMap(Arrays::stream)
         .forEach(WordCount2Main::processWord);
 
-      for (Object word : treeWords) {
-        System.out.println(word.toString());
+      Iterator hashIter = hashWords.iterator();
+      Iterator treeIter = treeWords.iterator();
+
+      System.out.println("HashSet");
+      while (hashIter.hasNext()) {
+        System.out.println(hashIter.next().toString());
+      }
+      System.out.println();
+
+      System.out.println("TreeSet");
+      while(treeIter.hasNext()) {
+        System.out.println(treeIter.next().toString());
       }
 
       System.out.println(String.format(

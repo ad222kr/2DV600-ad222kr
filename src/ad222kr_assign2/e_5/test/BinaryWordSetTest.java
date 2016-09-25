@@ -84,22 +84,21 @@ public class BinaryWordSetTest {
   }
 
   @Test
-  public void shit() {
+  public void iterator_checkReturnSorted() {
     String[] alph = "MGDQVNJERFZTOKLABXSICHYUWP".split("");
-    BinaryWordSet set = new BinaryWordSet();
-      for (String a : alph) {
-        set.add(new Word(a));
-      }
-//    set.add(new Word("Hej"));
-//    set.add(new Word("Alex"));
-//    set.add(new Word("Storm"));
-      Iterator it = set.iterator();
+    String[] alptOrdered = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-    while(it.hasNext()) {
-      System.out.println(it.next());
+    BinaryWordSet set = new BinaryWordSet();
+    for (String a : alph) {
+      set.add(new Word(a));
     }
 
-
+    Iterator it = set.iterator();
+    int i = 0;
+    while (it.hasNext()) {
+      assertEquals(alptOrdered[i], it.next().toString());
+      i++;
+    }
   }
 
   private BinaryWordSet buildSet(int numOfWords) {
@@ -108,15 +107,6 @@ public class BinaryWordSetTest {
       set.add(new Word(UUID.randomUUID().toString() + i));
     }
 
-//    set.add(new Word("Gamma"));
-//    set.add(new Word("Beta"));
-//    set.add(new Word("Alpha"));
-//    set.add(new Word("Zeta"));
-//    set.add(new Word("Hello"));
-//    set.add(new Word("Xerox"));
-//    set.add(new Word("Soccer"));
-//    set.add(new Word("Football"));
-//    set.add(new Word("IceHockey"));
 
 
     return set;

@@ -105,17 +105,16 @@ public class Ferry implements IFerry {
     sb.append(String.format("Number of vehicles:   %d\n", _vehicles.size()));
     sb.append(String.format("Money earned:         %d\n", countMoney()));
 
-    // Generates a lot of output on a full ferry. Uncomment to see it all
-//    sb.append("Vehicles on the ferry:\n");
-//    for (Vehicle v : this) {
-//      sb.append(String.format(
-//        "%s\n" +
-//        "\tUnits of space taken: %d\n" +
-//        "\tNumber of passengers: %d\n",
-//        v.getClass().getSimpleName(), v.getSpaceRequired(), v.getPassengerCount()
-//      ));
-//    }
-//    sb.append("\n");
+    sb.append("Vehicles on the ferry:\n");
+    for (Vehicle v : this) {
+      sb.append(String.format(
+        "%s\n" +
+        "\tUnits of space taken: %d\n" +
+        "\tNumber of passengers: %d\n",
+        v.getClass().getSimpleName(), v.getSpaceRequired(), v.getPassengerCount()
+      ));
+    }
+    sb.append("\n");
     return sb.toString();
   }
   @Override

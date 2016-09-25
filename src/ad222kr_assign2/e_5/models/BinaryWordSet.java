@@ -39,9 +39,11 @@ public class BinaryWordSet implements WordSet {
 
   private class TreeSetIterotor implements Iterator<Word> {
     Queue<BSTNode> queue;
+    Iterator<BSTNode> queueIter;
     public TreeSetIterotor() {
       queue = new GenericQueue<>();
       visit(root);
+      queueIter = queue.iterator();
     }
 
     private void visit(BSTNode node) {
@@ -56,12 +58,12 @@ public class BinaryWordSet implements WordSet {
     }
     @Override
     public boolean hasNext() {
-      return !queue.isEmpty();
+      return queueIter.hasNext();
     }
 
     @Override
     public Word next() {
-      return queue.dequeue().value;
+      return queueIter.next().value;
     }
   }
 

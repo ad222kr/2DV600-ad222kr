@@ -13,11 +13,14 @@ public class MyGraph<T> implements DirectedGraph<T> {
   private Map<T, Node<T>> nodes;
   private Set<Node<T>> heads;
   private Set<Node<T>> tails;
+  private int edges;
 
   public MyGraph() {
     nodes = new HashMap<>();
     heads = new HashSet<>();
     tails = new HashSet<>();
+    edges = 0;
+
   }
   @Override
   public Node<T> addNodeFor(T item) {
@@ -26,13 +29,11 @@ public class MyGraph<T> implements DirectedGraph<T> {
 
     MyNode<T> node = new MyNode<>(item);
     
-    if (!nodes.containsKey(item)) {
+    if (!nodes.containsKey(item) && !item.equals(nodes.get(item))) {
       nodes.put(item, node);
       heads.add(node);
       tails.add(node);
     }
-
-
     return node;
   }
 
@@ -43,7 +44,7 @@ public class MyGraph<T> implements DirectedGraph<T> {
     }
 
     if (nodes.containsKey(item)) {
-      throw new NoSuchElementException("No such item in the grapsh");
+      throw new NoSuchElementException("No such item in the graph");
     }
 
     return nodes.get(item);
@@ -59,6 +60,7 @@ public class MyGraph<T> implements DirectedGraph<T> {
     Node<T> target = addNodeFor(to);
 
 
+    return false;
 
   }
 

@@ -2,8 +2,10 @@ package ad222kr_assign3;
 
 import graphs.Node;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -23,6 +25,7 @@ public class MyNode<T> extends Node<T> {
     predesessors = new HashSet<>();
     successors = new HashSet<>();
   }
+
 
   @Override
   public boolean hasSucc(Node<T> node) {
@@ -56,6 +59,10 @@ public class MyNode<T> extends Node<T> {
 
   @Override
   protected void addSucc(Node<T> succ) {
+    if (succ == null) {
+      throw new NullPointerException();
+    }
+
     successors.add(succ);
   }
 
@@ -66,6 +73,19 @@ public class MyNode<T> extends Node<T> {
 
   @Override
   protected void addPred(Node<T> pred) {
+    if (pred == null) {
+      throw new NullPointerException();
+    }
+    if (this.equals(pred)) {
+      // hasReflexiveEdges only checks hasSucc, but removeReflexiveEdges
+      // returns both succ and pred.. SOO my assumption here is.. if you try
+      // to add a pred that is the same node, just ad it to successors and silently
+      // return
+      // TODO: check at handledning
+      successors.add(pred);
+      return;
+    }
+
     predesessors.add(pred);
   }
 
@@ -78,5 +98,20 @@ public class MyNode<T> extends Node<T> {
   protected void disconnect() {
     predesessors.clear();
     successors.clear();
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(item());
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof MyNode) {
+      return item() == ((MyNode) obj).item() &&
+             hashCode() == obj.hashCode();
+    }
+
+    return false;
   }
 }

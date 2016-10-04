@@ -105,13 +105,10 @@ public class NodeUnitTest {
     node.addPred(node);
 
     int expectedInDegree = 1;
-    // check outDegree in here..
-    // check MyNode::addPred method for reference
-    int actualInDegree = node.outDegree();
+    int actualInDegree = node.inDegree();
 
     assertEquals("Should be able to add the same node reference as a predecessor",
       expectedInDegree, actualInDegree);
-    assertTrue(node.hasReflexiveEdges());
   }
 
   @Test
@@ -121,14 +118,11 @@ public class NodeUnitTest {
 
     node.addPred(other);
 
-    int expectedOutDegree = 1;
-    // check outDegree..
-    // check MyNode::addPred method for reference on why
-    int actualOutDegree = node.outDegree();
+    int expectedInDegree = 1;
+    int actualInDegree = node.inDegree();
 
     assertEquals("Should be able to add the same node but diffrent instance as a pred",
-      expectedOutDegree, actualOutDegree);
-    assertTrue(node.hasReflexiveEdges());
+      expectedInDegree, actualInDegree);
   }
 
   @Test

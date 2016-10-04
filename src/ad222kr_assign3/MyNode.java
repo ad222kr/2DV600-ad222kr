@@ -2,17 +2,25 @@ package ad222kr_assign3;
 
 import graphs.Node;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * Created by alex on 30.9.16.
+ * Class representing a node in a Graph
  */
 public class MyNode<T> extends Node<T> {
-  private Set<Node<T>> predesessors;
+  /**
+   * HashSet holding the predecessors of this node
+   * A is a predecessor of B if A ----> B
+   */
+  private Set<Node<T>> predecessors;
+
+  /**
+   * HashSet holding the successors of this node
+   * B is a successor of A if A -----> B
+   */
   private Set<Node<T>> successors;
 
   /**
@@ -22,7 +30,7 @@ public class MyNode<T> extends Node<T> {
    */
   protected MyNode(T item) {
     super(item);
-    predesessors = new HashSet<>();
+    predecessors = new HashSet<>();
     successors = new HashSet<>();
   }
 
@@ -44,17 +52,17 @@ public class MyNode<T> extends Node<T> {
 
   @Override
   public boolean hasPred(Node<T> node) {
-    return predesessors.contains(node);
+    return predecessors.contains(node);
   }
 
   @Override
   public int inDegree() {
-    return predesessors.size();
+    return predecessors.size();
   }
 
   @Override
   public Iterator<Node<T>> predsOf() {
-    return predesessors.iterator();
+    return predecessors.iterator();
   }
 
   @Override
@@ -62,12 +70,13 @@ public class MyNode<T> extends Node<T> {
     if (succ == null) {
       throw new NullPointerException();
     }
-
     successors.add(succ);
   }
 
   @Override
   protected void removeSucc(Node<T> succ) {
+    if (succ == null)
+      throw new NullPointerException();
     successors.remove(succ);
   }
 
@@ -76,35 +85,42 @@ public class MyNode<T> extends Node<T> {
     if (pred == null) {
       throw new NullPointerException();
     }
-    if (this.equals(pred)) {
-      // hasReflexiveEdges only checks hasSucc, but removeReflexiveEdges
-      // returns both succ and pred.. SOO my assumption here is.. if you try
-      // to add a pred that is the same node, just ad it to successors and silently
-      // return
-      // TODO: check at handledning
-      successors.add(pred);
-      return;
-    }
 
-    predesessors.add(pred);
+    predecessors.add(pred);
   }
 
   @Override
   protected void removePred(Node<T> pred) {
-    predesessors.remove(pred);
+    if (pred == null)
+      throw new NullPointerException();
+    predecessors.remove(pred);
   }
 
   @Override
   protected void disconnect() {
-    predesessors.clear();
+    for (Node<T> pred : predecessors) {
+      ((MyNode<T>)pred).removeSucc(this);
+    }
+    for (Node<T> succ : successors) {
+      ((MyNode<T>)succ).removePred(this);
+    }
+
+    predecessors.clear();
     successors.clear();
   }
 
+  /**
+   * @return the hashcode value for the given instance
+   */
   @Override
   public int hashCode() {
     return Objects.hash(item());
   }
 
+  /**
+   * @param obj to compare against
+   * @return true if the nodes hold the same items and has the same hashcodes
+   */
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof MyNode) {

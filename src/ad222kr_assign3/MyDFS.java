@@ -12,6 +12,8 @@ import java.util.List;
 public class MyDFS<T> implements DFS<T> {
   @Override
   public List<Node<T>> dfs(DirectedGraph<T> graph, Node<T> root) {
+    if (root == null)
+      throw new NullPointerException("Root cannot be null");
     return null;
   }
 

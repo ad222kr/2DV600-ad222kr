@@ -4,9 +4,7 @@ import graphs.DFS;
 import graphs.DirectedGraph;
 import graphs.Node;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by alex on 30.9.16.
@@ -17,11 +15,12 @@ public class MyDFS<T> implements DFS<T> {
     if (root == null || graph == null)
       throw new NullPointerException();
 
-    boolean useRecursion = false;
+    boolean useRecursion = true;
 
     if (useRecursion) {
       ArrayList<Node<T>> visited = new ArrayList<>();
-      return dfs_recursive(graph, root, visited);
+      dfs_recursive(graph, root, visited);
+      return visited;
     } else {
       return dfs_iterative(graph, root);
     }
@@ -32,42 +31,15 @@ public class MyDFS<T> implements DFS<T> {
     if (graph == null)
       throw new NullPointerException();
 
-    boolean useRecursion = false;
+    boolean useRecursion = true;
 
     if (useRecursion) {
       ArrayList<Node<T>> visited = new ArrayList<>();
-      return dfs_recursive(graph, null, visited);
+      dfs_recursive(graph, null, visited);
+      return visited;
     } else {
       return dfs_iterative(graph, null);
     }
-
-  }
-
-
-
-  @Override
-  public List<Node<T>> postOrder(DirectedGraph<T> g, Node<T> root) {
-    return null;
-  }
-
-  @Override
-  public List<Node<T>> postOrder(DirectedGraph<T> g) {
-    return null;
-  }
-
-  @Override
-  public List<Node<T>> postOrder(DirectedGraph<T> g, boolean attach_dfs_number) {
-    return null;
-  }
-
-  @Override
-  public boolean isCyclic(DirectedGraph<T> graph) {
-    return false;
-  }
-
-  @Override
-  public List<Node<T>> topSort(DirectedGraph<T> graph) {
-    return null;
   }
 
   /**
@@ -96,10 +68,7 @@ public class MyDFS<T> implements DFS<T> {
 
         visited.add(current);
         current.num = visited.size();
-        for (Iterator<Node<T>> it = current.succsOf(); it.hasNext();) {
-          Node<T> next = it.next();
-          toVisit.add(0, next);
-        }
+        current.succsOf().forEachRemaining(node -> toVisit.add(0, node));
       }
     }
     return visited;
@@ -114,10 +83,9 @@ public class MyDFS<T> implements DFS<T> {
    * @param graph    the graph to search
    * @param node     current node to check
    * @param visited  array containing the visited elements, to keep track of em
-   * @return         a List containing all nodes when the recursion is done
    */
-  private List<Node<T>> dfs_recursive(DirectedGraph<T> graph, Node<T> node, ArrayList<Node<T>> visited) {
-    // TODO: clean up dry
+  private void dfs_recursive(DirectedGraph<T> graph, Node<T> node,
+                             List<Node<T>> visited) {
     if (node == null) {
       graph.heads().forEachRemaining(n -> {
         if (!visited.contains(n)) {
@@ -133,6 +101,40 @@ public class MyDFS<T> implements DFS<T> {
         node.succsOf().forEachRemaining(s -> dfs_recursive(graph, s, visited));
       }
     }
-    return visited;
   }
+
+  @Override
+  public List<Node<T>> postOrder(DirectedGraph<T> g, Node<T> root) {
+    return null;
+  }
+
+  @Override
+  public List<Node<T>> postOrder(DirectedGraph<T> g) {
+    return null;
+  }
+
+  @Override
+  public List<Node<T>> postOrder(DirectedGraph<T> g, boolean attach_dfs_number) {
+    return null;
+  }
+
+  @Override
+  public boolean isCyclic(DirectedGraph<T> graph) {
+    return false;
+  }
+
+  @Override
+  public List<Node<T>> topSort(DirectedGraph<T> graph) {
+
+   return null;
+
+  }
+
+  private void visitForTopSort(Node<T> node, List<Node<T>> tempMarked,
+                               List<Node<T>> visited, List<Node<T>> sorted) {
+
+  }
+
+
+
 }

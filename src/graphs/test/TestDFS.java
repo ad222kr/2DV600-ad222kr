@@ -254,28 +254,28 @@ public class TestDFS  {
     	Integer i1 = new Integer(1);
     	dg.addNodeFor(i1);
     	assertFalse(dfs.isCyclic(dg));
-    	
+
     	Integer i2 = new Integer(2);
     	dg.addEdgeFor(i1,i2);
     	assertFalse(dfs.isCyclic(dg));
-    	
+
 
     	dg.addEdgeFor(i2,i2);
     	assertTrue(dfs.isCyclic(dg));
-    	
+
     	/* Test some pre-defined graphs */
     	dg = generator.getSmallAcyclic();
     	assertFalse(dfs.isCyclic(dg));
-    	
+
     	dg = generator.getSmallCyclic();
     	assertTrue(dfs.isCyclic(dg));
-    	
+
     	dg = generator.getTwoParts();
     	assertTrue(dfs.isCyclic(dg));
-    	
+
     	dg = generator.getBinaryTree(4);
     	assertFalse(dfs.isCyclic(dg));
-    	
+
     	dg = generator.getComplete(4);
     	assertTrue(dfs.isCyclic(dg));
     	

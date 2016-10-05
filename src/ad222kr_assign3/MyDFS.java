@@ -10,16 +10,46 @@ import java.util.*;
  * Created by alex on 30.9.16.
  */
 public class MyDFS<T> implements DFS<T> {
+
+  /**
+   * counter for post order traversal
+   */
+  private int poCounter = 1;
+
+  /**
+   * Holds the nodes that have been visited by a traverse
+   */
+  private List<Node<T>> visited = new ArrayList<>();
+
+
+  /**
+   * Holds the nodes that are up next to visit
+   */
+  private List<Node<T>> toVisit = new ArrayList<>(); // To be visited next
+
+
+  /**
+   * Holds the nodes that have been traversed with postordering
+   */
+  private List<Node<T>> postOrderList = new ArrayList<>();
+
+  private void resetDFS() {
+    poCounter = 1;
+    visited.clear();
+    toVisit.clear();
+    postOrderList.clear();
+  }
+
   @Override
   public List<Node<T>> dfs(DirectedGraph<T> graph, Node<T> root) {
     if (root == null || graph == null)
       throw new NullPointerException();
 
+    resetDFS();
     boolean useRecursion = true;
 
     if (useRecursion) {
-      ArrayList<Node<T>> visited = new ArrayList<>();
-      dfs_recursive(graph, root, visited);
+      dfs_recursive(graph, root);
       return visited;
     } else {
       return dfs_iterative(graph, root);
@@ -31,11 +61,11 @@ public class MyDFS<T> implements DFS<T> {
     if (graph == null)
       throw new NullPointerException();
 
+    resetDFS();
     boolean useRecursion = true;
 
     if (useRecursion) {
-      ArrayList<Node<T>> visited = new ArrayList<>();
-      dfs_recursive(graph, null, visited);
+      dfs_recursive(graph, null);
       return visited;
     } else {
       return dfs_iterative(graph, null);
@@ -52,8 +82,6 @@ public class MyDFS<T> implements DFS<T> {
    * @return        a List of all the nodes found
    */
   private List<Node<T>> dfs_iterative(DirectedGraph<T> graph, Node<T> root) {
-    List<Node<T>> toVisit = new ArrayList<>(); // To be visited next
-    List<Node<T>> visited = new ArrayList<>(); // Already visited
 
     if (root == null) {
       graph.heads().forEachRemaining(toVisit::add);
@@ -82,35 +110,61 @@ public class MyDFS<T> implements DFS<T> {
    *
    * @param graph    the graph to search
    * @param node     current node to check
-   * @param visited  array containing the visited elements, to keep track of em
    */
-  private void dfs_recursive(DirectedGraph<T> graph, Node<T> node,
-                             List<Node<T>> visited) {
+  private void dfs_recursive(DirectedGraph<T> graph, Node<T> node) {
     if (node == null) {
+      // No root node to start searching from,
+      // use the head nodes as starting point!
       graph.heads().forEachRemaining(n -> {
         if (!visited.contains(n)) {
           visited.add(n);
           n.num = visited.size();
-          n.succsOf().forEachRemaining(s -> dfs_recursive(graph, s, visited));
+          n.succsOf().forEachRemaining(s -> dfs_recursive(graph, s));
         }
       });
     } else {
       if (!visited.contains(node)) {
         visited.add(node);
         node.num = visited.size();
-        node.succsOf().forEachRemaining(s -> dfs_recursive(graph, s, visited));
+        node.succsOf().forEachRemaining(s -> dfs_recursive(graph, s));
       }
     }
   }
 
   @Override
   public List<Node<T>> postOrder(DirectedGraph<T> g, Node<T> root) {
-    return null;
+    resetDFS();
+    postOrder(root);
+    return postOrderList;
+  }
+
+  /**
+   * Recursive traversing a
+   *
+   * @param node
+   */
+  private void postOrder(Node<T> node) {
+    visited.add(node);
+
+    for (Iterator<Node<T>> it = node.succsOf(); it.hasNext();) {
+      Node<T> s = it.next();
+      if (!visited.contains(s))
+        postOrder(s);
+    }
+    node.num = poCounter++;
+    postOrderList.add(node);
   }
 
   @Override
   public List<Node<T>> postOrder(DirectedGraph<T> g) {
-    return null;
+    resetDFS();
+    g.heads().forEachRemaining(toVisit::add);
+
+    for (Node<T> n : toVisit) {
+      postOrder(n);
+    }
+
+    return postOrderList;
   }
 
   @Override

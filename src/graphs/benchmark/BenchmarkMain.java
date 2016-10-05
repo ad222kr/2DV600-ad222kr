@@ -21,7 +21,7 @@ public class BenchmarkMain {
 		time += gbm.runDfsBfs();
 		
 	    time += gbm.runTransitiveClosure();
-	    
+
 	    time += gbm.runConnectedComponents();
 	    
 	    System.out.println("Total Time: "+time);

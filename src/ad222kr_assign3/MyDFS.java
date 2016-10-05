@@ -1,5 +1,7 @@
 package ad222kr_assign3;
 
+import com.sun.xml.internal.bind.api.impl.NameConverter;
+import com.sun.xml.internal.org.jvnet.fastinfoset.ExternalVocabulary;
 import graphs.DFS;
 import graphs.DirectedGraph;
 import graphs.Node;
@@ -11,49 +13,17 @@ import java.util.*;
  */
 public class MyDFS<T> implements DFS<T> {
 
-  /**
-   * counter for post order traversal
-   */
-  private int poCounter = 1;
-
-  /**
-   * Holds the nodes that have been visited by a traverse
-   */
-  private List<Node<T>> visited = new ArrayList<>();
-
-
-  /**
-   * Holds the nodes that are up next to visit
-   */
-  private List<Node<T>> toVisit = new ArrayList<>(); // To be visited next
-
-
-  /**
-   * Holds the nodes that have been traversed with postordering
-   */
-  private List<Node<T>> postOrderList = new ArrayList<>();
-
-  private void resetDFS() {
-    poCounter = 1;
-    visited.clear();
-    toVisit.clear();
-    postOrderList.clear();
-  }
-
   @Override
   public List<Node<T>> dfs(DirectedGraph<T> graph, Node<T> root) {
     if (root == null || graph == null)
       throw new NullPointerException();
 
-    resetDFS();
-    boolean useRecursion = true;
+    List<Node<T>> bfsNodes = new ArrayList<>();
+    //Set<Node<T>> visited = new HashSet<>();
+    Node<T> node = graph.getNodeFor(root.item()); // make sure the node is actually in the graph
+    dfs_recursive(bfsNodes, node /*, visited*/);
+    return bfsNodes;
 
-    if (useRecursion) {
-      dfs_recursive(graph, root);
-      return visited;
-    } else {
-      return dfs_iterative(graph, root);
-    }
   }
 
   @Override
@@ -61,14 +31,41 @@ public class MyDFS<T> implements DFS<T> {
     if (graph == null)
       throw new NullPointerException();
 
-    resetDFS();
-    boolean useRecursion = true;
+    List<Node<T>> bfsNodes = new ArrayList<>();
+    // Using HashSet to store the visited nodes makes this so much faster..
+    // but if the SIZE in benchmarks is over 166, it produces a StackOverflowError
+    // not sure why..
+    //Set<Node<T>> visited = new HashSet<>();
 
-    if (useRecursion) {
-      dfs_recursive(graph, null);
-      return visited;
-    } else {
-      return dfs_iterative(graph, null);
+    if (graph.headCount() >= 1) {
+      for (Iterator<Node<T>> it = graph.heads(); it.hasNext();) {
+        dfs_recursive(bfsNodes, it.next()/*, visited*/);
+      }
+    }
+    else
+      dfs_recursive(bfsNodes, graph.getNodeFor(graph.allItems().get(0))/*, visited*/);
+
+
+    return bfsNodes;
+
+  }
+
+  /**
+   * A recursive approach to the depth first search algorithm
+   * If the root parameter sent in is null, it starts the search
+   * from the head nodes of the graph
+   *
+   * @param node     current node to check
+   */
+  private void dfs_recursive(List<Node<T>> bfsNodes, Node<T> node/*, Set<Node<T>> visited*/) {
+    if (!bfsNodes.contains(node)) {
+      //visited.add(node);
+      bfsNodes.add(node);
+      node.num = bfsNodes.size();
+      //node.succsOf().forEachRemaining(s -> dfs_recursive(visited, s));
+      for (Iterator<Node<T>> it = node.succsOf(); it.hasNext();) {
+        dfs_recursive(bfsNodes, it.next()/*, visited*/);
+      }
     }
   }
 
@@ -77,65 +74,39 @@ public class MyDFS<T> implements DFS<T> {
    * If the root parameter sent in is null, it starts searching
    * from the head nodes of the graph.
    *
-   * @param   graph the Graph to searh
    * @param   root  element to start at
    * @return        a List of all the nodes found
    */
-  private List<Node<T>> dfs_iterative(DirectedGraph<T> graph, Node<T> root) {
+//  private List<Node<T>> dfs_iterative(DirectedGraph<T> graph, Node<T> root) {
+//
+//    if (root == null) {
+//      graph.heads().forEachRemaining(toVisit::add);
+//    } else {
+//      toVisit.add(root);
+//    }
+//
+//    while (!toVisit.isEmpty()) {
+//      Node<T> current = toVisit.remove(0);
+//
+//      if (!visited.contains(current)) {
+//
+//        visited.add(current);
+//        current.num = visited.size();
+//        current.succsOf().forEachRemaining(node -> toVisit.add(0, node));
+//      }
+//    }
+//    return visited;
+//  }
 
-    if (root == null) {
-      graph.heads().forEachRemaining(toVisit::add);
-    } else {
-      toVisit.add(root);
-    }
-
-    while (!toVisit.isEmpty()) {
-      Node<T> current = toVisit.remove(0);
-
-      if (!visited.contains(current)) {
-
-        visited.add(current);
-        current.num = visited.size();
-        current.succsOf().forEachRemaining(node -> toVisit.add(0, node));
-      }
-    }
-    return visited;
-  }
 
 
-  /**
-   * A recursive approach to the depth first search algorithm
-   * If the root parameter sent in is null, it starts the search
-   * from the head nodes of the graph
-   *
-   * @param graph    the graph to search
-   * @param node     current node to check
-   */
-  private void dfs_recursive(DirectedGraph<T> graph, Node<T> node) {
-    if (node == null) {
-      // No root node to start searching from,
-      // use the head nodes as starting point!
-      graph.heads().forEachRemaining(n -> {
-        if (!visited.contains(n)) {
-          visited.add(n);
-          n.num = visited.size();
-          n.succsOf().forEachRemaining(s -> dfs_recursive(graph, s));
-        }
-      });
-    } else {
-      if (!visited.contains(node)) {
-        visited.add(node);
-        node.num = visited.size();
-        node.succsOf().forEachRemaining(s -> dfs_recursive(graph, s));
-      }
-    }
-  }
 
   @Override
   public List<Node<T>> postOrder(DirectedGraph<T> g, Node<T> root) {
-    resetDFS();
-    postOrder(root);
-    return postOrderList;
+    List<Node<T>> visited = new ArrayList<>();
+    List<Node<T>> poList = new ArrayList<>();
+    postOrder(root, visited, poList);
+    return poList;
   }
 
   /**
@@ -143,28 +114,30 @@ public class MyDFS<T> implements DFS<T> {
    *
    * @param node
    */
-  private void postOrder(Node<T> node) {
+  private void postOrder(Node<T> node, List<Node<T>> visited, List<Node<T>> poList) {
     visited.add(node);
 
     for (Iterator<Node<T>> it = node.succsOf(); it.hasNext();) {
       Node<T> s = it.next();
       if (!visited.contains(s))
-        postOrder(s);
+        postOrder(s, visited, poList);
     }
-    node.num = poCounter++;
-    postOrderList.add(node);
+    node.num = poList.size() + 1;
+    poList.add(node);
   }
 
   @Override
   public List<Node<T>> postOrder(DirectedGraph<T> g) {
-    resetDFS();
-    g.heads().forEachRemaining(toVisit::add);
 
-    for (Node<T> n : toVisit) {
-      postOrder(n);
-    }
+    List<Node<T>> visited = new ArrayList<>();
+    List<Node<T>> poList = new ArrayList<>();
 
-    return postOrderList;
+    if (g.headCount() >= 1)
+      g.heads().forEachRemaining(h -> postOrder(h, visited, poList));
+    else
+      postOrder(g.getNodeFor(g.allItems().get(0)), visited, poList);
+
+    return poList;
   }
 
   @Override
@@ -174,21 +147,26 @@ public class MyDFS<T> implements DFS<T> {
 
   @Override
   public boolean isCyclic(DirectedGraph<T> graph) {
+    // TODO: implement a real(?) algortihm, preferably using the
+    // topSort to check
+    for (Node<T> node : postOrder(graph)) {
+      for (Iterator<Node<T>> it = node.succsOf(); it.hasNext();) {
+        // An edge src → tgt is a backward edge if Po(src) ≤ Po(tgt)
+        if (node.num <= it.next().num)
+          return true;
+      }
+    }
+    // no backwards edges found
     return false;
   }
 
   @Override
   public List<Node<T>> topSort(DirectedGraph<T> graph) {
-
-   return null;
-
-  }
-
-  private void visitForTopSort(Node<T> node, List<Node<T>> tempMarked,
-                               List<Node<T>> visited, List<Node<T>> sorted) {
+    // TODO: Implement a real topological sort algorithm
+    // and use it to detect cycles as well...
+    List<Node<T>> list = postOrder(graph);
+    Collections.reverse(list);
+    return list;
 
   }
-
-
-
 }

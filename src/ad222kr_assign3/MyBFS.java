@@ -23,7 +23,7 @@ public class MyBFS<T> implements BFS<T> {
   }
   private List<Node<T>> bfs_iterative(DirectedGraph<T> graph, Node<T> root) {
     // Linked list since it is much faster att adding/removing elements
-    List<Node<T>> toVisit = new LinkedList<>(); //47 sek linked list, arraylist slow
+    Queue<Node<T>> toVisit = new LinkedList<>(); //47 sek linked list, arraylist slow
     Set<Node<T>> visited = new HashSet<>(); // 23 sek hashSet
     ArrayList<Node<T>> bfsNodes = new ArrayList<>();
 
@@ -37,7 +37,7 @@ public class MyBFS<T> implements BFS<T> {
     }
 
     while (!toVisit.isEmpty()) {
-      Node<T> current = toVisit.remove(0);
+      Node<T> current = toVisit.remove();
 
       if (!visited.contains(current)) {
         visited.add(current);
@@ -47,6 +47,7 @@ public class MyBFS<T> implements BFS<T> {
       }
 
     }
+
     return bfsNodes;
   }
 }

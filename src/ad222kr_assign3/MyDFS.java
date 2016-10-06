@@ -18,11 +18,13 @@ public class MyDFS<T> implements DFS<T> {
     if (root == null || graph == null)
       throw new NullPointerException();
 
-    List<Node<T>> bfsNodes = new ArrayList<>();
-    Set<Node<T>> visited = new HashSet<>();
-    Node<T> node = graph.getNodeFor(root.item()); // make sure the node is actually in the graph
-    dfs_recursive(bfsNodes, node, visited);
-    return bfsNodes;
+//    List<Node<T>> dfsNodes = new ArrayList<>();
+//    Set<Node<T>> visited = new HashSet<>();
+//    Node<T> node = graph.getNodeFor(root.item()); // make sure the node is actually in the graph
+//    dfs_recursive(dfsNodes, node, visited);
+//    return dfsNodes;
+
+    return dfs_iterative(graph, root);
 
   }
 
@@ -31,19 +33,19 @@ public class MyDFS<T> implements DFS<T> {
     if (graph == null)
       throw new NullPointerException();
 
-    List<Node<T>> bfsNodes = new ArrayList<>();
-    Set<Node<T>> visited = new HashSet<>();
+//    List<Node<T>> bfsNodes = new ArrayList<>();
+//    Set<Node<T>> visited = new HashSet<>();
+//
+//    if (graph.headCount() >= 1) {
+//      for (Iterator<Node<T>> it = graph.heads(); it.hasNext();) {
+//        dfs_recursive(bfsNodes, it.next(), visited);
+//      }
+//    }
+//    else
+//      dfs_recursive(bfsNodes, graph.getNodeFor(graph.allItems().get(0)), visited);
 
-    if (graph.headCount() >= 1) {
-      for (Iterator<Node<T>> it = graph.heads(); it.hasNext();) {
-        dfs_recursive(bfsNodes, it.next(), visited);
-      }
-    }
-    else
-      dfs_recursive(bfsNodes, graph.getNodeFor(graph.allItems().get(0)), visited);
 
-
-    return bfsNodes;
+    return dfs_iterative(graph, null);
 
   }
 
@@ -78,33 +80,38 @@ public class MyDFS<T> implements DFS<T> {
    * @param   root  element to start at
    * @return        a List of all the nodes found
    */
-//  private List<Node<T>> dfs_iterative(DirectedGraph<T> graph, Node<T> root) {
-//
-//    if (root == null) {
-//      graph.heads().forEachRemaining(toVisit::add);
-//    } else {
-//      toVisit.add(root);
-//    }
-//
-//    while (!toVisit.isEmpty()) {
-//      Node<T> current = toVisit.remove(0);
-//
-//      if (!visited.contains(current)) {
-//
-//        visited.add(current);
-//        current.num = visited.size();
-//        current.succsOf().forEachRemaining(node -> toVisit.add(0, node));
-//      }
-//    }
-//    return visited;
-//  }
+  private List<Node<T>> dfs_iterative(DirectedGraph<T> graph, Node<T> root) {
+    Stack<Node<T>> toVisit = new Stack<>();
+    Set<Node<T>> visited = new HashSet<>();
+    List<Node<T>> dfsNodes = new ArrayList<>();
+
+    if (root != null)
+      toVisit.add(root);
+    else if (graph.headCount() >= 1)
+      graph.heads().forEachRemaining(toVisit::add);
+    else
+      toVisit.add(graph.getNodeFor(graph.allItems().get(0)));
+
+    while (!toVisit.isEmpty()) {
+      Node<T> node = toVisit.pop();
+
+      if (!visited.contains(node)) {
+
+        visited.add(node);
+        node.num = dfsNodes.size();
+        dfsNodes.add(node);
+        node.succsOf().forEachRemaining(s -> toVisit.add(s));
+      }
+    }
+    return dfsNodes;
+  }
 
 
 
 
   @Override
   public List<Node<T>> postOrder(DirectedGraph<T> g, Node<T> root) {
-    List<Node<T>> visited = new ArrayList<>();
+    Set<Node<T>> visited = new HashSet<>();
     List<Node<T>> poList = new ArrayList<>();
     postOrder(root, visited, poList);
     return poList;
@@ -115,7 +122,7 @@ public class MyDFS<T> implements DFS<T> {
    *
    * @param node
    */
-  private void postOrder(Node<T> node, List<Node<T>> visited, List<Node<T>> poList) {
+  private void postOrder(Node<T> node, Set<Node<T>> visited, List<Node<T>> poList) {
     visited.add(node);
 
     for (Iterator<Node<T>> it = node.succsOf(); it.hasNext();) {
@@ -130,7 +137,7 @@ public class MyDFS<T> implements DFS<T> {
   @Override
   public List<Node<T>> postOrder(DirectedGraph<T> g) {
 
-    List<Node<T>> visited = new ArrayList<>();
+    Set<Node<T>> visited = new HashSet<>();
     List<Node<T>> poList = new ArrayList<>();
 
     if (g.headCount() >= 1)

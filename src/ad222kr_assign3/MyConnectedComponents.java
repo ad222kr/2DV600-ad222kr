@@ -1,10 +1,11 @@
 package ad222kr_assign3;
 
 import graphs.ConnectedComponents;
+import graphs.DFS;
 import graphs.DirectedGraph;
 import graphs.Node;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Created by alex on 30.9.16.

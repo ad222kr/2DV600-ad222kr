@@ -19,9 +19,9 @@ public class MyDFS<T> implements DFS<T> {
       throw new NullPointerException();
 
     List<Node<T>> bfsNodes = new ArrayList<>();
-    //Set<Node<T>> visited = new HashSet<>();
+    Set<Node<T>> visited = new HashSet<>();
     Node<T> node = graph.getNodeFor(root.item()); // make sure the node is actually in the graph
-    dfs_recursive(bfsNodes, node /*, visited*/);
+    dfs_recursive(bfsNodes, node, visited);
     return bfsNodes;
 
   }
@@ -32,18 +32,15 @@ public class MyDFS<T> implements DFS<T> {
       throw new NullPointerException();
 
     List<Node<T>> bfsNodes = new ArrayList<>();
-    // Using HashSet to store the visited nodes makes this so much faster..
-    // but if the SIZE in benchmarks is over 166, it produces a StackOverflowError
-    // not sure why..
-    //Set<Node<T>> visited = new HashSet<>();
+    Set<Node<T>> visited = new HashSet<>();
 
     if (graph.headCount() >= 1) {
       for (Iterator<Node<T>> it = graph.heads(); it.hasNext();) {
-        dfs_recursive(bfsNodes, it.next()/*, visited*/);
+        dfs_recursive(bfsNodes, it.next(), visited);
       }
     }
     else
-      dfs_recursive(bfsNodes, graph.getNodeFor(graph.allItems().get(0))/*, visited*/);
+      dfs_recursive(bfsNodes, graph.getNodeFor(graph.allItems().get(0)), visited);
 
 
     return bfsNodes;
@@ -57,14 +54,18 @@ public class MyDFS<T> implements DFS<T> {
    *
    * @param node     current node to check
    */
-  private void dfs_recursive(List<Node<T>> bfsNodes, Node<T> node/*, Set<Node<T>> visited*/) {
-    if (!bfsNodes.contains(node)) {
-      //visited.add(node);
+  private void dfs_recursive(List<Node<T>> bfsNodes, Node<T> node, Set<Node<T>> visited) {
+    // Using a hashSet to check wheter the node has been visited or not takes the
+    // benchmark for dfs/bfs from 24 seconds to 0.74, but if the size sent in to
+    // the GraphBenchmark is bigger than 166(i think) the recursion produces a stackoverflow-error..
+    // so not sure which one to use..
+    //
+    if (!visited.contains(node)) {
+      visited.add(node);
       bfsNodes.add(node);
       node.num = bfsNodes.size();
-      //node.succsOf().forEachRemaining(s -> dfs_recursive(visited, s));
       for (Iterator<Node<T>> it = node.succsOf(); it.hasNext();) {
-        dfs_recursive(bfsNodes, it.next()/*, visited*/);
+        dfs_recursive(bfsNodes, it.next(), visited);
       }
     }
   }

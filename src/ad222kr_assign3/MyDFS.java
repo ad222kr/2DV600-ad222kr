@@ -18,12 +18,6 @@ public class MyDFS<T> implements DFS<T> {
     if (root == null || graph == null)
       throw new NullPointerException();
 
-//    List<Node<T>> dfsNodes = new ArrayList<>();
-//    Set<Node<T>> visited = new HashSet<>();
-//    Node<T> node = graph.getNodeFor(root.item()); // make sure the node is actually in the graph
-//    dfs_recursive(dfsNodes, node, visited);
-//    return dfsNodes;
-
     return dfs_iterative(graph, root);
 
   }
@@ -33,49 +27,23 @@ public class MyDFS<T> implements DFS<T> {
     if (graph == null)
       throw new NullPointerException();
 
-//    List<Node<T>> bfsNodes = new ArrayList<>();
-//    Set<Node<T>> visited = new HashSet<>();
-//
-//    if (graph.headCount() >= 1) {
-//      for (Iterator<Node<T>> it = graph.heads(); it.hasNext();) {
-//        dfs_recursive(bfsNodes, it.next(), visited);
-//      }
-//    }
-//    else
-//      dfs_recursive(bfsNodes, graph.getNodeFor(graph.allItems().get(0)), visited);
-
-
     return dfs_iterative(graph, null);
 
-  }
-
-  /**
-   * A recursive approach to the depth first search algorithm
-   * If the root parameter sent in is null, it starts the search
-   * from the head nodes of the graph
-   *
-   * @param node     current node to check
-   */
-  private void dfs_recursive(List<Node<T>> bfsNodes, Node<T> node, Set<Node<T>> visited) {
-    // Using a hashSet to check wheter the node has been visited or not takes the
-    // benchmark for dfs/bfs from 24 seconds to 0.74, but if the size sent in to
-    // the GraphBenchmark is bigger than 166(i think) the recursion produces a stackoverflow-error..
-    // so not sure which one to use..
-    //
-    if (!visited.contains(node)) {
-      visited.add(node);
-      bfsNodes.add(node);
-      node.num = bfsNodes.size();
-      for (Iterator<Node<T>> it = node.succsOf(); it.hasNext();) {
-        dfs_recursive(bfsNodes, it.next(), visited);
-      }
-    }
   }
 
   /**
    * An iterative approach to the depth first search algorithm.
    * If the root parameter sent in is null, it starts searching
    * from the head nodes of the graph.
+   *
+   * Similar to the BFS, but it keeps the elements to visit next in a stack
+   * instead of a queue, since the deepest element should be added before its
+   * "parents"
+   *
+   * Uses a HashSet to keep track of the already visisted elements for fast
+   * lookup/contains.
+   *
+   * The result is added to the ArrayList dfsNodes
    *
    * @param   root  element to start at
    * @return        a List of all the nodes found
@@ -106,8 +74,28 @@ public class MyDFS<T> implements DFS<T> {
     return dfsNodes;
   }
 
+  /**
+   * A recursive approach to the depth first search algorithm
+   * If the root parameter sent in is null, it starts the search
+   * from the head nodes of the graph
+   *
+   * WARNING: This method can result in a StackOverflowError if
+   * the graph has to many nodes since the callstack will exceed
+   * the size of the stack..
+   *
+   * @param node     current node to check
+   */
+  private void dfs_recursive(List<Node<T>> bfsNodes, Node<T> node, Set<Node<T>> visited) {
 
-
+    if (!visited.contains(node)) {
+      visited.add(node);
+      bfsNodes.add(node);
+      node.num = bfsNodes.size();
+      for (Iterator<Node<T>> it = node.succsOf(); it.hasNext();) {
+        dfs_recursive(bfsNodes, it.next(), visited);
+      }
+    }
+  }
 
   @Override
   public List<Node<T>> postOrder(DirectedGraph<T> g, Node<T> root) {
@@ -118,7 +106,9 @@ public class MyDFS<T> implements DFS<T> {
   }
 
   /**
-   * Recursive traversing a
+   * Recursive approach to a postOrder sorting.
+   *
+   *
    *
    * @param node
    */
@@ -175,6 +165,5 @@ public class MyDFS<T> implements DFS<T> {
     List<Node<T>> list = postOrder(graph);
     Collections.reverse(list);
     return list;
-
   }
 }

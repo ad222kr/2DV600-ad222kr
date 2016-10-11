@@ -64,7 +64,10 @@ public class MyBFS<T> implements BFS<T> {
         visited.add(current);
         bfsNodes.add(current);
         current.num = visited.size();
-        current.succsOf().forEachRemaining(toVisit::add);
+        current.succsOf().forEachRemaining(s -> {
+          if (!visited.contains(s))
+            toVisit.add(s);
+        });
       }
     }
 

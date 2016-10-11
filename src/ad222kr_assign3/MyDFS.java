@@ -49,26 +49,29 @@ public class MyDFS<T> implements DFS<T> {
    * @return        a List of all the nodes found
    */
   private List<Node<T>> dfs_iterative(DirectedGraph<T> graph, Node<T> root) {
-    Stack<Node<T>> toVisit = new Stack<>();
-    Set<Node<T>> visited = new HashSet<>();
-    List<Node<T>> dfsNodes = new ArrayList<>();
+    Stack<Node<T>> toVisit = new Stack<>(); //O(1)
+    Set<Node<T>> visited = new HashSet<>(); //O(1)
+    List<Node<T>> dfsNodes = new ArrayList<>(); //O(1)
 
     if (root != null)
-      toVisit.add(root);
+      toVisit.add(root); //O(1)
     else if (graph.headCount() >= 1)
-      graph.heads().forEachRemaining(toVisit::add);
+      graph.heads().forEachRemaining(toVisit::add);//O(n) worst case all nodes are Heads
     else
-      toVisit.add(graph.getNodeFor(graph.allItems().get(0)));
+      toVisit.add(graph.getNodeFor(graph.allItems().get(0))); //O(1)
 
-    while (!toVisit.isEmpty()) {
-      Node<T> node = toVisit.pop();
+    while (!toVisit.isEmpty()) { // O(n) visit all nodes
+      Node<T> node = toVisit.pop(); // O(1)
 
-      if (!visited.contains(node)) {
+      if (!visited.contains(node)) { // O(1) HashSet contains is constant
 
-        visited.add(node);
-        node.num = dfsNodes.size();
-        dfsNodes.add(node);
-        node.succsOf().forEachRemaining(s -> toVisit.add(s));
+        visited.add(node); // O(1)
+        node.num = dfsNodes.size(); //O(1)
+        dfsNodes.add(node); // O(1)
+        node.succsOf().forEachRemaining(s -> {
+          if (!visited.contains(s))
+            toVisit.add(s);
+        }); // O(S)
       }
     }
     return dfsNodes;

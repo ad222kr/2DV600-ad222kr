@@ -75,7 +75,7 @@ public class MyConnectedComponents<T> implements ConnectedComponents<T> {
         // are connected but wasn't picked up by the dfs
         if (!Collections.disjoint(c, component)) {
           // Sometimes a dfs will pick up 2 "components" that might share elements,
-          // i.e. 4 -> 5 and 6 -> 5
+          // i.e. 4 -> 5 and 6 -> 5, 4 -> 5 <- 6
           // therefor we need to merge them and then clear the component so it is
           // empty for the empty check below
           c.addAll(component);

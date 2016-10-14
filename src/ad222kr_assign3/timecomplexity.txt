@@ -3,70 +3,127 @@ Link to google document:
 https://docs.google.com/document/d/1YRGl0qge-PiWntSvgCEkH2MbhQUyzc_PqmtN4n6O5dM/edit?usp=sharing
 
 Depth First Search
-ad222kr.MyDFS.dfs(DirectedGraph<T> graph)
-    A HashSet is used to keep track of the visited nodes, it preforms many lookups but they are O(1) for this data structure.
-    Worst case, start at the the heads, therefore iterate the heads and add them to toVisit
-        O(h)
-    We visit all the nodes one time
-        O(n)
-    For each visited node, add its successors to the toVisit
-        O(e)
+------------------------------------------------------------------------------------------------------
+Pseudo code for the algorithm:
+    if root element
+        mark root to visit // O(1)
+    else if heads exist in graph
+        mark heads to visit //O(N) in worst case
+    else
+        mark first node in graph.all_nodes to visist //O(1)
+    end if
 
-    Therefor, the time complexity will be
-        O(h+ n + e)
-        h = n in worst case, therefor
-        O(2n + e)
-        O(n + e) since we remove all constants.
-    Answer: O(n + e) where n = nodes and e = edges
+    while there are nodes to visit // O(N), we visist all nodes once
+        if node is not visited // O(1)
+            mark node as visited  //O(1)
+            for each successor of node O(S)
+                mark successor to visit //O(1)
+            end for
+        end if
+    end while
+
+Since we visit each node once, the loop will be O(N) time complexity
+For every node we visist, we mark its successors to be visited, therefor O(S)
+If we have a worst case scenario, all nodes are heads, therefore it is O(N)
+Since we visit each node once, and each successor once, we get this
+Answer: O(2N + S) = O(N + S) since all constant values are removed
+
+
 
 Breadth First Search
-ad222kr.MyBFS.bfs(DirectedGraph<E> graph)
-    The breadth first search implementation is almost exactly the same as the DFS, but instead of using a stack to keep track of the nodes to visit next, it uses a LinkedList acting as a Queue, therefor insert and delete are O(1).
-
-    Worst case, start at the heads, and add the to toVisit
-        O(h)
-    Visit all nodes once
-        O(n)
-    Visist each nodes edges
-        O(e)
-    Therefore
-        O(h + n + e)
-        h = n in worst case, therefor
-        O(2n + e)
-        O(n + e) since we romve all constants
-    Answer: O(n + e) where n = nodes, e = edges
+------------------------------------------------------------------------------------------------------
+My implementation of Breadth First Search is almost identical to the Depth First Search
+except for the collection that keeps track of the nodes to visit next is a Queue instead
+of a Stack. Therefor, see the Depth First Search equation for time complexity
 
 Transitive Closure
-ad222kr.MyTransitiveClosure.computeClosure(DirectedGraph<E> graph)
-    The Transitive Closure algorithm uses the dfs internally to search each node once.
-    A HashMap is used to collect the closures, HashMap::put() is O(1)
-    The only iteration done by this algorithm is visiting each node once, therefore
-        O(n)
-    Each visit preforms a dfs
-        O(n + e)
-    So we get
-        O(n + e) * O(n) = O(n * n + n * e) = O(n² + ne)
-    Answer = O(n² + ne) where n = nodes, e = edges
+------------------------------------------------------------------------------------------------------
+Pseudo Code for the algorithm
 
+    for each node of graph //O(N)
+        closure = dfs(node) //O(N + E)
+    end for
+
+The algorithm traverses the graph, visiting each node once, giving the complexity O(N)
+For each node, the algorithm preforms a depth first search with the time complexity O(N + E)
+Therefor, we have the complexity O(N(N + E))
+Answer: O(N² + NE)
 
 Connected Components
-ad222kr.MyConnectedComponents.computeComponents(DirectedGraph<E> graph)
-    This algorithm uses 2 HashSets internally, therefor all insert and lookup operations for these are O(1).
-    We visit each node once
-        O(n)
-    For each node, we create a component, add it to visited and preform a dfs
-        O(n + e)
-    For each node we get from the dfs, we add it to the component
-        O(r), worst case s = n. r = reachable from node
-    then we check the collection holding the components if 2 components share elements, then they need to be merged
-        O(c), worst case c = n, c = connectec component
-    Therefore we have
-        O(n) * O(n + e + r + c), where in worst case bot r and e are no, so
-        O(n) * (3n + e)
-    Get rid of all the constans
-        O(n) * (n + e) = O(n * n + n * e) = O(n² + ne), n = node, e = edge
-    Answer: O(n² + ne).
-    Note: This algorithm has the same time complexity as transitive closure, and in a worst case scenario it will preform as slow. But since we add each node found by the first dfs to the visited, we wont visit thse nodes again. So this algorithym will almost always preform better than the Transitive Closure.
+------------------------------------------------------------------------------------------------------
+Pseudo code for the algorithm
+    create set components
+    for each node in graph //O(N)
+        create set component
+
+        if node not visited
+            mark node as visited
+            reachable_from_node = dfs(node) //O(V + E)
+
+            for each reachable_node in reachable_from_node //O(V)
+                add reachable_node to component
+                mark reachable_node as visited
+            end for
+        end if
+
+        for c in components // O(N)
+            if component shares some elements //O(V)
+                add all components in component to c //O(V)
+                remove all from component//O(V)
+            end
+        end for
+
+        for
+        if component not empty //O(1)
+            add component to components//O(1)
+    end for
+
+The algorithm iterates each node in the graph once  O(N)
+For each iteration, it preforms a dfs, O(N + E)
+It also iterates over the result of the dfs, O(N)
+then, it iterates over every component already in the list, O(S
+for every component, it checks if the currently created component shares
+any elements with any of the other components, O(N)
+if the component shares any elements, it adds the all to the matching component O(N)
+and clears the currently created component O(N)
+
+This was my initial time complexity, but i also have an alternate with other variables
+since using N for every variable isn't right in my opinion, since not every operation
+depends on the number of graphs in the node. This could be right if every iteration would
+be a worst case scenario and iterate as many times as there are nodes, but that is virtually
+impossible.
+
+O(N(N+E+N+N(N+N)))
+O(N(N+E+N(N)))
+O(N(N+E+N²)
+O(N²+NE+N³)
+
+
+Alternate(and correct in my opinion):
+N = Nodes,
+V = Vertexes (Nodes in a dfs)
+E = Edges (Successors in a dfs)
+
+the line for c in components is treated as O(N), since in worst case it will hold the same number
+of elements as there are nodes in the graph. If thats the case, it makes sense to have different
+variables for the dfs-nodes, since in this case they will have 0 successors (every node will be a
+component without any connections to other nodes). Therefore, V is also used in traversing the components
+elements, since they will be the same as the nodes returned from the dfs.
+
+In a graph with 5000 elements and no connections, each node will be treated as a own component, but will have 0 successors.
+In that case, the dfs will return instantly and have a O(1) time complexity. In that case, the complexity could be
+O(N + N²) since V will be 1 (every node in dfs traversal) and e will be 0 (no edges at nodes).
+
+In a graph with 5000 elements, a head node and all nodes reachable from the head, it will only preform one
+dfs-search. In this case, time complexity could be written as O(N + V + E), and since V will be N in this case,
+we can narrow it down to O(N + E)
+
+O(N(V+E+V+N(V+V)))
+O(N(2V+E+N(2V)))
+O(N(V+E+N(V)))
+O(N(V+E+NV))
+Answer: O(NV+NE+N²V)
+
 
 References:
 What are the time complexities of various data structures? - http://stackoverflow.com/a/7294635/6601566

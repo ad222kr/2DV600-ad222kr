@@ -87,7 +87,7 @@ public class MyConnectedComponents<T> implements ConnectedComponents<T> {
         components.add(component);
     }
 
-    return components;
+     return components;
   }
 
 

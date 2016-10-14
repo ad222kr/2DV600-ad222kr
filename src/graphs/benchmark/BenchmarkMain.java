@@ -20,7 +20,7 @@ public class BenchmarkMain {
 
 		time += gbm.runDfsBfs();
 
-	time += gbm.runTransitiveClosure();
+		time += gbm.runTransitiveClosure();
 
 		time += gbm.runConnectedComponents();
 	    

@@ -55,36 +55,37 @@ public class MyConnectedComponents<T> implements ConnectedComponents<T> {
 
     for (Node<T> node : dg) {
       // Create a "component" for each node
-      Set<Node<T>> component  = new HashSet<>();
+
       if (!visited.contains(node)) {
         // add the node to the component and mark it visited
+        Set<Node<T>> component  = new HashSet<>();
         visited.add(node);
         component.add(node);
 
         // get all nodes reachable from this node
         Collection<Node<T>> reachable = myDFS.dfs(dg, node);
-        for (Node<T> r : reachable) {
+        for(Node<T> r : reachable) {
+          visited.add(r);
           component.add(r);
-          visited.add(r); // do not visit every node with dfs, takes to much time
         }
-      }
 
-      for (Collection<Node<T>> c : components) {
-        // check if 2 components share some elements,
-        // in that case they need to be merged since they are
-        // are connected but wasn't picked up by the dfs
-        if (!Collections.disjoint(c, component)) {
-          // Sometimes a dfs will pick up 2 "components" that might share elements,
-          // i.e. 4 -> 5 and 6 -> 5, 4 -> 5 <- 6
-          // therefor we need to merge them and then clear the component so it is
-          // empty for the empty check below
-          c.addAll(component);
-          component.clear();
+        for (Collection<Node<T>> c : components) {
+          // check if 2 components share some elements,
+          // in that case they need to be merged since they are
+          // are connected but wasn't picked up by the dfs
+          if (!Collections.disjoint(c, component)) {
+            // Sometimes a dfs will pick up 2 "components" that might share elements,
+            // i.e. 4 -> 5 and 6 -> 5, 4 -> 5 <- 6
+            // therefor we need to merge them and then clear the component so it is
+            // empty for the empty check below
+            c.addAll(component);
+            component.clear();
+          }
         }
-      }
 
-      if (!component.isEmpty())
-        components.add(component);
+        if (!component.isEmpty())
+          components.add(component);
+      }
     }
 
      return components;

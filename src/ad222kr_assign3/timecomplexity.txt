@@ -1,0 +1,72 @@
+Time complexity
+Link to google document:
+https://docs.google.com/document/d/1YRGl0qge-PiWntSvgCEkH2MbhQUyzc_PqmtN4n6O5dM/edit?usp=sharing
+
+Depth First Search
+ad222kr.MyDFS.dfs(DirectedGraph<T> graph)
+    A HashSet is used to keep track of the visited nodes, it preforms many lookups but they are O(1) for this data structure.
+    Worst case, start at the the heads, therefore iterate the heads and add them to toVisit
+        O(h)
+    We visit all the nodes one time
+        O(n)
+    For each visited node, add its successors to the toVisit
+        O(e)
+
+    Therefor, the time complexity will be
+        O(h+ n + e)
+        h = n in worst case, therefor
+        O(2n + e)
+        O(n + e) since we remove all constants.
+    Answer: O(n + e) where n = nodes and e = edges
+
+Breadth First Search
+ad222kr.MyBFS.bfs(DirectedGraph<E> graph)
+    The breadth first search implementation is almost exactly the same as the DFS, but instead of using a stack to keep track of the nodes to visit next, it uses a LinkedList acting as a Queue, therefor insert and delete are O(1).
+
+    Worst case, start at the heads, and add the to toVisit
+        O(h)
+    Visit all nodes once
+        O(n)
+    Visist each nodes edges
+        O(e)
+    Therefore
+        O(h + n + e)
+        h = n in worst case, therefor
+        O(2n + e)
+        O(n + e) since we romve all constants
+    Answer: O(n + e) where n = nodes, e = edges
+
+Transitive Closure
+ad222kr.MyTransitiveClosure.computeClosure(DirectedGraph<E> graph)
+    The Transitive Closure algorithm uses the dfs internally to search each node once.
+    A HashMap is used to collect the closures, HashMap::put() is O(1)
+    The only iteration done by this algorithm is visiting each node once, therefore
+        O(n)
+    Each visit preforms a dfs
+        O(n + e)
+    So we get
+        O(n + e) * O(n) = O(n * n + n * e) = O(n² + ne)
+    Answer = O(n² + ne) where n = nodes, e = edges
+
+
+Connected Components
+ad222kr.MyConnectedComponents.computeComponents(DirectedGraph<E> graph)
+    This algorithm uses 2 HashSets internally, therefor all insert and lookup operations for these are O(1).
+    We visit each node once
+        O(n)
+    For each node, we create a component, add it to visited and preform a dfs
+        O(n + e)
+    For each node we get from the dfs, we add it to the component
+        O(r), worst case s = n. r = reachable from node
+    then we check the collection holding the components if 2 components share elements, then they need to be merged
+        O(c), worst case c = n, c = connectec component
+    Therefore we have
+        O(n) * O(n + e + r + c), where in worst case bot r and e are no, so
+        O(n) * (3n + e)
+    Get rid of all the constans
+        O(n) * (n + e) = O(n * n + n * e) = O(n² + ne), n = node, e = edge
+    Answer: O(n² + ne).
+    Note: This algorithm has the same time complexity as transitive closure, and in a worst case scenario it will preform as slow. But since we add each node found by the first dfs to the visited, we wont visit thse nodes again. So this algorithym will almost always preform better than the Transitive Closure.
+
+References:
+What are the time complexities of various data structures? - http://stackoverflow.com/a/7294635/6601566
